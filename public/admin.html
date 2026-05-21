@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maison Rose Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div>
+          <div class="brand-row">
+            <span class="brand-mark">MR</span>
+            <span>Maison Rose Admin</span>
+          </div>
+          <h1>Salon daybook</h1>
+          <p>
+            A calm owner view for today's appointments, client details, and quick booking status updates.
+          </p>
+        </div>
+        <div class="admin-actions">
+          <div class="language-switch admin-language-switch" id="adminLanguageSwitch" aria-label="Admin language"></div>
+          <button class="admin-button" id="refreshBookings">Refresh</button>
+          <button class="admin-button" id="logoutAdmin">Log out</button>
+        </div>
+      </header>
+
+      <section class="admin-login" id="adminLogin">
+        <h2>Owner access</h2>
+        <label class="field">
+          <span>Admin password</span>
+          <input type="password" id="adminPassword" placeholder="Enter password" />
+        </label>
+        <p class="admin-error" id="loginError"></p>
+        <button class="primary-button" id="loginButton">Open dashboard</button>
+      </section>
+
+      <section class="admin-dashboard hidden" id="adminDashboard">
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Salon profile</h2>
+          <p class="admin-muted">Brand, branch, deposit and reminder settings.</p>
+        </div>
+
+        <form class="admin-management-grid" id="settingsForm">
+          <label class="field compact-field">
+            <span>Salon name</span>
+            <input type="text" id="salonName" />
+          </label>
+          <label class="field compact-field">
+            <span>Branch</span>
+            <input type="text" id="branchName" />
+          </label>
+          <label class="field compact-field">
+            <span>Phone</span>
+            <input type="text" id="salonPhone" />
+          </label>
+          <label class="field compact-field">
+            <span>Address</span>
+            <input type="text" id="salonAddress" />
+          </label>
+          <label class="field compact-field">
+            <span>Instagram</span>
+            <input type="text" id="salonInstagram" />
+          </label>
+          <label class="field compact-field">
+            <span>Brand color</span>
+            <input type="color" id="brandColor" />
+          </label>
+          <label class="toggle-line">
+            <input type="checkbox" id="depositRequired" />
+            <span>Require deposit</span>
+          </label>
+          <label class="field compact-field">
+            <span>Deposit amount</span>
+            <input type="number" id="depositAmount" min="0" step="1000" />
+          </label>
+          <label class="toggle-line">
+            <input type="checkbox" id="remindersEnabled" />
+            <span>Reminder messages</span>
+          </label>
+          <label class="field compact-field">
+            <span>Reminder hours before</span>
+            <input type="number" id="reminderHours" min="1" step="1" />
+          </label>
+          <button class="admin-button primary" type="submit">Save salon profile</button>
+        </form>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title" id="googleSheetTitle">Google Sheet sync</h2>
+          <button class="admin-button primary" type="button" id="syncGoogleSheet">Sync now</button>
+        </div>
+        <div class="google-sheet-panel">
+          <p class="admin-muted" id="googleSheetHelp">
+            Use Google Sheet for services, specialists, weekly hours, exceptions, and manual bookings.
+          </p>
+          <div class="compact-list" id="googleSheetStatus"></div>
+        </div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Analytics</h2>
+          <button class="admin-button" type="button" id="refreshAnalytics">Refresh analytics</button>
+        </div>
+        <div class="analytics-grid" id="analyticsGrid"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Calendar view</h2>
+          <label class="field compact-field inline-field">
+            <span>Day</span>
+            <input type="date" id="calendarDate" />
+          </label>
+        </div>
+        <div class="calendar-board" id="calendarBoard"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Manual booking</h2>
+          <p class="admin-muted">Use this for phone or Instagram bookings.</p>
+        </div>
+        <form class="admin-management-grid" id="manualBookingForm">
+          <label class="field compact-field">
+            <span>Client name</span>
+            <input type="text" id="manualClientName" required />
+          </label>
+          <label class="field compact-field">
+            <span>Phone</span>
+            <input type="tel" id="manualPhone" required />
+          </label>
+          <label class="field compact-field">
+            <span>Service</span>
+            <select id="manualService" required></select>
+          </label>
+          <label class="field compact-field">
+            <span>Specialist</span>
+            <select id="manualSpecialist" required></select>
+          </label>
+          <label class="field compact-field">
+            <span>Date</span>
+            <input type="date" id="manualDate" required />
+          </label>
+          <label class="field compact-field">
+            <span>Time</span>
+            <select id="manualTime" required></select>
+          </label>
+          <button class="admin-button primary" type="submit">Add manual booking</button>
+        </form>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Availability exceptions</h2>
+          <p class="admin-muted">Special vacation days or one-day custom hours.</p>
+        </div>
+        <form class="admin-management-grid" id="exceptionForm">
+          <label class="field compact-field">
+            <span>Specialist</span>
+            <select id="exceptionSpecialist" required></select>
+          </label>
+          <label class="field compact-field">
+            <span>Date</span>
+            <input type="date" id="exceptionDate" required />
+          </label>
+          <label class="toggle-line">
+            <input type="checkbox" id="exceptionDayOff" />
+            <span>Day off</span>
+          </label>
+          <label class="field compact-field">
+            <span>Start</span>
+            <input type="time" id="exceptionStart" value="10:00" />
+          </label>
+          <label class="field compact-field">
+            <span>End</span>
+            <input type="time" id="exceptionEnd" value="18:00" />
+          </label>
+          <label class="field compact-field">
+            <span>Note</span>
+            <input type="text" id="exceptionNote" placeholder="Vacation / short day" />
+          </label>
+          <button class="admin-button primary" type="submit">Add exception</button>
+        </form>
+        <div class="compact-list" id="exceptionList"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Client notes</h2>
+          <p class="admin-muted">Private owner notes for repeat clients.</p>
+        </div>
+        <form class="admin-management-grid" id="noteForm">
+          <label class="field compact-field">
+            <span>Client name</span>
+            <input type="text" id="noteClientName" />
+          </label>
+          <label class="field compact-field">
+            <span>Phone</span>
+            <input type="tel" id="notePhone" required />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>Note</span>
+            <input type="text" id="noteText" required />
+          </label>
+          <button class="admin-button primary" type="submit">Add note</button>
+        </form>
+        <div class="compact-list" id="noteList"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Reminder preview</h2>
+          <button class="admin-button" type="button" id="loadReminders">Load reminder candidates</button>
+        </div>
+        <div class="compact-list" id="reminderList"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Service categories</h2>
+          <p class="admin-muted">Manage service names and durations used in the booking flow.</p>
+        </div>
+
+        <form class="staff-create" id="createServiceForm">
+          <label class="field compact-field">
+            <span>Service name</span>
+            <input type="text" id="newServiceName" placeholder="Brow Lamination" />
+          </label>
+          <label class="field compact-field">
+            <span>Duration minutes</span>
+            <input type="number" id="newServiceDuration" min="15" step="15" placeholder="45" />
+          </label>
+          <button class="admin-button primary" type="submit">Add service</button>
+        </form>
+
+        <div class="service-admin-grid" id="serviceAdminList"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Staff schedules</h2>
+          <div class="admin-actions">
+            <button class="admin-button primary" type="button" id="openAddSpecialist">Add specialist</button>
+            <button class="admin-button danger" type="button" id="openRemoveSpecialist">Remove specialist</button>
+          </div>
+        </div>
+        <p class="admin-muted section-note">Each service category has its own specialists. Change hours inside the category card.</p>
+
+        <div class="staff-grid" id="staffSchedules"></div>
+
+        <div class="admin-toolbar">
+          <h2 class="admin-section-title">Bookings</h2>
+          <div class="admin-filters" id="adminFilters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="today">Today</button>
+            <button class="filter-chip" data-filter="tomorrow">Tomorrow</button>
+            <button class="filter-chip" data-filter="confirmed">Confirmed</button>
+            <button class="filter-chip" data-filter="cancelled">Cancelled</button>
+            <button class="filter-chip" data-filter="no_show">No-show</button>
+          </div>
+        </div>
+
+        <div class="booking-list" id="bookingList"></div>
+      </section>
+    </main>
+
+    <div class="admin-toast" id="adminToast" role="status" aria-live="polite"></div>
+
+    <div class="admin-modal hidden" id="specialistModal" aria-hidden="true">
+      <div class="admin-modal-backdrop" data-close-modal></div>
+      <form class="admin-modal-card" id="createSpecialistForm">
+        <div class="modal-title-row">
+          <div>
+            <p class="eyebrow">Team</p>
+            <h2>Add specialist</h2>
+          </div>
+          <button class="icon-button modal-close" type="button" data-close-modal>&times;</button>
+        </div>
+        <label class="field compact-field">
+          <span>Service category</span>
+          <select id="newSpecialistService" required></select>
+        </label>
+        <label class="field compact-field">
+          <span>Specialist name</span>
+          <input type="text" id="newSpecialistName" placeholder="Mia Harper" required />
+        </label>
+        <label class="field compact-field">
+          <span>Role</span>
+          <input type="text" id="newSpecialistRole" placeholder="Brow Artist" required />
+        </label>
+        <div class="schedule-row">
+          <label class="field compact-field">
+            <span>Start</span>
+            <input type="time" id="newSpecialistStart" value="10:00" required />
+          </label>
+          <label class="field compact-field">
+            <span>End</span>
+            <input type="time" id="newSpecialistEnd" value="18:00" required />
+          </label>
+        </div>
+        <button class="admin-button primary wide" type="submit">Create specialist</button>
+      </form>
+    </div>
+
+    <div class="admin-modal hidden" id="removeSpecialistModal" aria-hidden="true">
+      <div class="admin-modal-backdrop" data-close-remove-modal></div>
+      <form class="admin-modal-card" id="removeSpecialistForm">
+        <div class="modal-title-row">
+          <div>
+            <p class="eyebrow">Team</p>
+            <h2>Remove specialist</h2>
+          </div>
+          <button class="icon-button modal-close" type="button" data-close-remove-modal>&times;</button>
+        </div>
+        <label class="field compact-field">
+          <span>Choose specialist</span>
+          <select id="removeSpecialistSelect" required></select>
+        </label>
+        <p class="admin-muted">This hides the specialist from clients but keeps old booking history.</p>
+        <button class="admin-button danger wide" type="submit">Remove from booking flow</button>
+      </form>
+    </div>
+
+    <script src="/admin.js"></script>
+  </body>
+</html>

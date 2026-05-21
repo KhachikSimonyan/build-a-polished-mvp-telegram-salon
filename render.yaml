@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: maison-rose-salon-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: maison-rose-postgres
+          property: connectionString
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: BASE_URL
+        sync: false
+      - key: OWNER_CHAT_ID
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: GOOGLE_SYNC_ENABLED
+        value: false
+      - key: GOOGLE_SHEET_ID
+        sync: false
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: GOOGLE_SYNC_INTERVAL_SECONDS
+        value: 60
+
+databases:
+  - name: maison-rose-postgres
+    databaseName: salon_booking
+    user: salon_booking_user

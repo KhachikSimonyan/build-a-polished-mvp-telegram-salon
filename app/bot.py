@@ -1,0 +1,205 @@
+from html import escape
+
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppInfo
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
+
+from app.config import settings
+from app.database import BookingNotFound, SlotAlreadyBooked, get_booking, update_booking_status
+
+
+def is_owner(chat_id: int | str) -> bool:
+    return bool(settings.owner_chat_id) and str(chat_id) == str(settings.owner_chat_id)
+
+
+def admin_url() -> str:
+    if not settings.is_public_https_base_url:
+        return f"{settings.base_url}/admin"
+    return f"{settings.base_url}/admin?access={settings.admin_password}"
+
+
+def mini_app_markup(chat_id: int | str | None = None) -> InlineKeyboardMarkup:
+    if not settings.is_public_https_base_url:
+        return InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Mini App needs HTTPS", callback_data="mini_app_needs_https")]]
+        )
+
+    keyboard = [[InlineKeyboardButton("Open booking experience", web_app=WebAppInfo(settings.base_url))]]
+    if chat_id is not None and is_owner(chat_id):
+        keyboard.append([InlineKeyboardButton("Open admin dashboard", web_app=WebAppInfo(admin_url()))])
+    return InlineKeyboardMarkup(keyboard)
+
+
+def admin_markup() -> InlineKeyboardMarkup:
+    if not settings.is_public_https_base_url:
+        return InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Admin needs HTTPS", callback_data="mini_app_needs_https")]]
+        )
+
+    return InlineKeyboardMarkup(
+        [[InlineKeyboardButton("Open admin dashboard", web_app=WebAppInfo(admin_url()))]]
+    )
+
+
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    first_name = update.effective_user.first_name or "there"
+    await update.message.reply_text(
+        f"Welcome, {first_name}. Step inside Maison Rose and reserve your next salon visit in a few elegant taps.",
+        reply_markup=mini_app_markup(chat_id),
+    )
+
+
+async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    if not is_owner(chat_id):
+        await update.message.reply_text("Admin access is available only for the salon owner.")
+        return
+
+    await update.message.reply_text(
+        "Open your Maison Rose owner dashboard to manage bookings and staff schedules.",
+        reply_markup=admin_markup(),
+    )
+
+
+async def callback_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    pool = context.application.bot_data["pool"]
+
+    try:
+        if query.data == "mini_app_needs_https":
+            await query.answer("Set BASE_URL to a public HTTPS URL, then restart the app.", show_alert=True)
+            return
+
+        if query.data.startswith("booking:cancel:"):
+            booking_id = query.data.replace("booking:cancel:", "")
+            booking = await update_booking_status(pool, booking_id, "cancelled")
+            await notify_status_change(context.application, booking, "client")
+            await query.answer("Your booking has been cancelled.", show_alert=True)
+            return
+
+        if query.data.startswith("admin:"):
+            _, action, booking_id = query.data.split(":")
+
+            if action == "phone":
+                booking = await get_booking(pool, booking_id)
+                await query.answer(f"Client phone: {booking['phone']}", show_alert=True)
+                return
+
+            if action not in {"confirmed", "cancelled", "completed", "no_show"}:
+                await query.answer("Unsupported booking action.", show_alert=True)
+                return
+
+            booking = await update_booking_status(pool, booking_id, action)
+            await notify_status_change(context.application, booking, "admin")
+            await query.answer(f"Booking marked {action}.")
+    except BookingNotFound:
+        await query.answer("Booking not found.", show_alert=True)
+    except SlotAlreadyBooked:
+        await query.answer("That slot is already booked.", show_alert=True)
+    except Exception:
+        await query.answer("Could not update booking.", show_alert=True)
+
+
+async def create_bot_application(pool) -> Application | None:
+    if not settings.telegram_bot_token or settings.disable_telegram_bot:
+        return None
+
+    application = (
+        Application.builder()
+        .token(settings.telegram_bot_token)
+        .connect_timeout(20)
+        .read_timeout(20)
+        .write_timeout(20)
+        .pool_timeout(20)
+        .build()
+    )
+    application.bot_data["pool"] = pool
+    application.add_handler(CommandHandler("start", start_command))
+    application.add_handler(CommandHandler("admin", admin_command))
+    application.add_handler(CallbackQueryHandler(callback_query))
+    return application
+
+
+async def send_booking_messages(application: Application | None, booking: dict) -> None:
+    if not application:
+        return
+
+    user_message = "\n".join(
+        [
+            "Your Maison Rose booking is confirmed.",
+            "",
+            f"{booking['serviceName']} with {booking['specialistName']}",
+            f"{booking['date']} at {booking['time']}-{booking['endTime']}",
+            "",
+            f"Client: {booking['clientName']}",
+            "We look forward to welcoming you.",
+        ]
+    )
+
+    user_buttons = [[InlineKeyboardButton("Cancel booking", callback_data=f"booking:cancel:{booking['id']}")]]
+    if settings.is_public_https_base_url:
+        user_buttons.append([InlineKeyboardButton("Change time", web_app=WebAppInfo(settings.base_url))])
+
+    await application.bot.send_message(
+        booking["telegramUserId"],
+        user_message,
+        reply_markup=InlineKeyboardMarkup(user_buttons),
+    )
+
+    if settings.owner_chat_id:
+        telegram_label = escape(booking["firstName"])
+        if booking["username"]:
+            telegram_label = f"{telegram_label} (@{escape(booking['username'])})"
+
+        owner_message = "\n".join(
+            [
+                "New salon booking",
+                "",
+                f"{booking['serviceName']} with {booking['specialistName']}",
+                f"{booking['date']} at {booking['time']}-{booking['endTime']}",
+                f"Client: {escape(booking['clientName'])}",
+                f"Phone: {escape(booking['phone'])}",
+                f"Telegram: {telegram_label}",
+            ]
+        )
+
+        await application.bot.send_message(
+            settings.owner_chat_id,
+            owner_message,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Confirm", callback_data=f"admin:confirmed:{booking['id']}"),
+                        InlineKeyboardButton("Complete", callback_data=f"admin:completed:{booking['id']}"),
+                        InlineKeyboardButton("Cancel", callback_data=f"admin:cancelled:{booking['id']}"),
+                    ],
+                    [
+                        InlineKeyboardButton("No-show", callback_data=f"admin:no_show:{booking['id']}"),
+                        InlineKeyboardButton("Call client", callback_data=f"admin:phone:{booking['id']}"),
+                    ],
+                    [InlineKeyboardButton("Open admin", web_app=WebAppInfo(admin_url()))],
+                ]
+            ),
+        )
+
+
+async def notify_status_change(application: Application | None, booking: dict, changed_by: str) -> None:
+    if not application:
+        return
+
+    if changed_by == "admin" and booking.get("telegramUserId"):
+        await application.bot.send_message(
+            booking["telegramUserId"],
+            f"Your Maison Rose booking is now {booking['status']}.\n\n"
+            f"{booking['serviceName']} with {booking['specialistName']}\n"
+            f"{booking['date']} at {booking['time']}",
+        )
+
+    if changed_by == "client" and settings.owner_chat_id:
+        await application.bot.send_message(
+            settings.owner_chat_id,
+            f"Client cancelled a booking.\n\n"
+            f"{booking['serviceName']} with {booking['specialistName']}\n"
+            f"{booking['date']} at {booking['time']}\n"
+            f"Client: {booking['clientName']}",
+        )

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maison Rose Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" data-step="0">
+        <div class="brand-row">
+          <span class="brand-mark">MR</span>
+          <span>Maison Rose</span>
+        </div>
+        <div class="language-switch" data-language-switch></div>
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="privateAppointments">Private salon appointments</p>
+          <h1 data-i18n="heroTitle">Reserve your glow ritual.</h1>
+          <p data-i18n="heroText">
+            A polished booking flow for modern beauty salons, made to feel intimate,
+            premium, and effortless inside Telegram.
+          </p>
+        </div>
+        <div class="hero-card">
+          <div>
+            <span class="hero-card-label" data-i18n="todayMood">Today's mood</span>
+            <strong data-i18n="moodValue">soft rose finish</strong>
+          </div>
+          <span class="sparkle">*</span>
+        </div>
+        <button class="primary-button" id="startBooking">Begin booking</button>
+      </section>
+
+      <section class="booking-panel hidden" data-step="1">
+        <div class="topbar">
+          <button class="icon-button" id="backButton" aria-label="Go back">&lsaquo;</button>
+          <div>
+            <span class="step-kicker" id="stepKicker">Step 1 of 3</span>
+            <h2 id="stepTitle">Choose a service</h2>
+          </div>
+        </div>
+
+        <div class="language-switch compact" data-language-switch></div>
+
+        <div class="progress">
+          <span class="progress-dot active"></span>
+          <span class="progress-dot"></span>
+          <span class="progress-dot"></span>
+        </div>
+
+        <div class="step-view" id="serviceStep">
+          <div class="card-grid" id="serviceCards"></div>
+        </div>
+
+        <div class="step-view hidden" id="specialistStep">
+          <div class="card-grid" id="specialistCards"></div>
+        </div>
+
+        <div class="step-view hidden" id="timeStep">
+          <div class="summary-strip" id="bookingSummary"></div>
+
+          <label class="field">
+            <span data-i18n="date">Date</span>
+            <input type="date" id="dateInput" />
+          </label>
+
+          <div class="field">
+            <span data-i18n="availableTimes">Available times</span>
+            <div class="time-grid" id="timeSlots"></div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span data-i18n="clientName">Your name</span>
+              <input type="text" id="clientName" autocomplete="name" placeholder="Ani Sargsyan" />
+            </label>
+            <label class="field">
+              <span data-i18n="phone">Phone</span>
+              <input type="tel" id="phone" autocomplete="tel" placeholder="+374 77 123 456" />
+            </label>
+          </div>
+
+          <p class="error-message" id="errorMessage"></p>
+          <button class="primary-button full" id="submitBooking">Confirm appointment</button>
+        </div>
+      </section>
+
+      <section class="success-panel hidden" id="successPanel">
+        <div class="success-orb">OK</div>
+        <p class="eyebrow" data-i18n="successEyebrow">Appointment confirmed</p>
+        <h2 data-i18n="successTitle">Your beauty ritual is reserved.</h2>
+        <p id="successText"></p>
+        <button class="secondary-button" id="closeApp">Close</button>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

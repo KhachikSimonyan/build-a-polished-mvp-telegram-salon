@@ -1,0 +1,17 @@
+.env
+google-service-account*.json
+.venv/
+__pycache__/
+*.py[cod]
+.demo/
+
+node_modules/
+.npm-cache/
+
+*.zip
+_export_*/
+_zip_check/
+_zip_verify_*/
+
+.DS_Store
+Thumbs.db
