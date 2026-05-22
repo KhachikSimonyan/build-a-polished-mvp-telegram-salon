@@ -19,6 +19,7 @@ const newServiceName = document.querySelector("#newServiceName");
 const newServiceDuration = document.querySelector("#newServiceDuration");
 const newServiceIcon = document.querySelector("#newServiceIcon");
 const newServiceImageUrl = document.querySelector("#newServiceImageUrl");
+const newServiceImageUpload = document.querySelector("#newServiceImageUpload");
 const specialistModal = document.querySelector("#specialistModal");
 const removeSpecialistModal = document.querySelector("#removeSpecialistModal");
 const removeSpecialistForm = document.querySelector("#removeSpecialistForm");
@@ -56,6 +57,7 @@ const syncGoogleSheetButton = document.querySelector("#syncGoogleSheet");
 const googleSheetStatus = document.querySelector("#googleSheetStatus");
 const googleSheetTitle = document.querySelector("#googleSheetTitle");
 const googleSheetHelp = document.querySelector("#googleSheetHelp");
+const heroImageUpload = document.querySelector("#heroImageUpload");
 
 let adminPassword = sessionStorage.getItem("maisonRoseAdminPassword") || "";
 let adminLanguage = localStorage.getItem("maisonRoseAdminLanguage") || "en";
@@ -108,6 +110,8 @@ const adminTranslations = {
     heroTitle: "Hero title",
     heroText: "Hero text",
     heroImageUrl: "Hero image URL",
+    uploadHeroImage: "Upload hero image from device",
+    uploadServiceImage: "Upload service image from device",
     requireDeposit: "Require deposit",
     depositAmount: "Deposit amount",
     reminderMessages: "Reminder messages",
@@ -337,6 +341,11 @@ const adminTranslations = {
   }
 };
 
+Object.assign(adminTranslations.hy, {
+  uploadHeroImage: "Ներբեռնել գլխավոր նկարը սարքից",
+  uploadServiceImage: "Ներբեռնել ծառայության նկարը սարքից"
+});
+
 const accessPassword = new URLSearchParams(window.location.search).get("access");
 if (accessPassword) {
   adminPassword = accessPassword;
@@ -465,6 +474,14 @@ loadRemindersButton.addEventListener("click", async (event) => {
 
 syncGoogleSheetButton.addEventListener("click", async (event) => {
   await withButtonState(event.currentTarget, adminLanguage === "hy" ? "Սինք..." : "Syncing...", syncGoogleSheet);
+});
+
+heroImageUpload.addEventListener("change", async () => {
+  await uploadImageIntoInput(heroImageUpload, document.querySelector("#heroImageUrl"));
+});
+
+newServiceImageUpload.addEventListener("change", async () => {
+  await uploadImageIntoInput(newServiceImageUpload, newServiceImageUrl);
 });
 
 filters.addEventListener("click", (event) => {
@@ -688,6 +705,8 @@ function translateLabels() {
     "Hero title": "heroTitle",
     "Hero text": "heroText",
     "Hero image URL": "heroImageUrl",
+    "Upload hero image from device": "uploadHeroImage",
+    "Upload service image from device": "uploadServiceImage",
     "Deposit amount": "depositAmount",
     "Reminder hours before": "reminderHoursBefore",
     Day: "day",
@@ -904,7 +923,11 @@ function renderServices() {
           </label>
           <label class="field compact-field wide-field">
             <span>Image URL</span>
-            <input type="url" value="${escapeHtml(service.imageUrl || "")}" data-service-image-url />
+            <input type="text" value="${escapeHtml(service.imageUrl || "")}" data-service-image-url />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>${tr("uploadServiceImage")}</span>
+            <input type="file" accept="image/*" data-service-image-upload />
           </label>
           <div class="admin-actions">
             <button class="admin-button primary" data-save-service>${tr("save")}</button>
@@ -929,6 +952,13 @@ function renderServices() {
       await withButtonState(button, service.active ? tr("removing") : tr("saving"), async () => {
         await setServiceActive(card.dataset.serviceId, !service.active);
       });
+    });
+  });
+
+  serviceAdminList.querySelectorAll("[data-service-image-upload]").forEach((input) => {
+    input.addEventListener("change", async () => {
+      const card = input.closest("[data-service-id]");
+      await uploadImageIntoInput(input, card.querySelector("[data-service-image-url]"));
     });
   });
 }
@@ -1296,7 +1326,7 @@ function shadeColor(hex, percent) {
 function sanitizeCssUrl(value) {
   const fallback = "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80";
   const url = String(value || "").trim();
-  if (!url || !/^https?:\/\//i.test(url)) return fallback;
+  if (!url || (!/^https?:\/\//i.test(url) && !url.startsWith("/uploads/"))) return fallback;
   return url.replaceAll('"', "%22");
 }
 
@@ -1643,12 +1673,35 @@ async function rescheduleBooking(id, date, time) {
   showToast(tr("bookingRescheduled"));
 }
 
+async function uploadImageIntoInput(fileInput, targetInput) {
+  const file = fileInput.files?.[0];
+  if (!file || !targetInput) {
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const data = await adminFetch("/api/admin/uploads", {
+      method: "POST",
+      body: formData
+    });
+    targetInput.value = data.url;
+    showToast(adminLanguage === "hy" ? "Նկարը ավելացվեց։ Սեղմիր պահպանել։" : "Image uploaded. Save changes.");
+  } catch (error) {
+    showToast(error.message, "error");
+  } finally {
+    fileInput.value = "";
+  }
+}
+
 async function adminFetch(url, options = {}) {
+  const isFormData = options.body instanceof FormData;
   const response = await fetch(url, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
       "x-admin-password": adminPassword,
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(options.headers || {})
     }
   });

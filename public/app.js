@@ -927,7 +927,7 @@ function shadeColor(hex, percent) {
 function sanitizeCssUrl(value) {
   const fallback = "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80";
   const url = String(value || "").trim();
-  if (!url || !/^https?:\/\//i.test(url)) return fallback;
+  if (!url || (!/^https?:\/\//i.test(url) && !url.startsWith("/uploads/"))) return fallback;
   return url.replaceAll('"', "%22");
 }
 
