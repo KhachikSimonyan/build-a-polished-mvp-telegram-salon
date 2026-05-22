@@ -643,6 +643,23 @@ Object.assign(localizedServices, {
   }
 });
 
+const localizedSpecialists = {
+  "emily-rose": {
+    en: {
+      role: "Laser hair removal specialist",
+      note: "Personal approach, safe technology, and delicate results."
+    },
+    hy: {
+      role: "Լազերային մազահեռացման մասնագետ",
+      note: "Բացառիկ անհատական մոտեցում, անվտանգ տեխնոլոգիա եւ նուրբ արդյունք։"
+    },
+    ru: {
+      role: "Специалист по лазерной эпиляции",
+      note: "Индивидуальный подход, безопасная технология и деликатный результат."
+    }
+  }
+};
+
 Object.assign(translations.en, {
   minutesShort: "min.",
   noSpecialist: "No active specialist is assigned to this service yet."
@@ -943,8 +960,8 @@ function renderCards() {
         <button class="select-card ${state.specialist?.id === specialist.id ? "selected" : ""}" data-specialist-id="${specialist.id}">
           <span class="card-icon">${specialist.icon}</span>
           <span>
-            <h3>${specialist.name} - ${specialist.role}</h3>
-            <p>${specialist.note}</p>
+            <h3>${specialist.name} - ${getSpecialistRole(specialist)}</h3>
+            <p>${getSpecialistNote(specialist)}</p>
           </span>
           <span class="card-arrow">&rsaquo;</span>
         </button>
@@ -1123,7 +1140,6 @@ async function loadCatalog() {
       }));
     specialists = (data.specialists || []).map((specialist) => ({
       ...specialist,
-      note: getSpecialistNote(specialist.id),
       icon: getSpecialistIcon(specialist.name)
     }));
     state.settings = {
@@ -1154,14 +1170,17 @@ function getServiceIcon(id) {
   return icons[id] || "HL";
 }
 
-function getSpecialistNote(id) {
-  const notes = {
-    "emily-rose": "Բացառիկ անհատական մոտեցում, անվտանգ տեխնոլոգիա եւ նուրբ արդյունք։",
-    "sophia-martin": "Minimal, clean, high-gloss manicures.",
-    "lily-anderson": "Hydration rituals and luminous skin treatments.",
-    "ava-bennett": "Soft brunettes, rose tones, and champagne blondes."
-  };
-  return notes[id] || "Heln վստահելի մասնագետ։";
+function getSpecialistRole(specialist) {
+  return localizedSpecialists[specialist.id]?.[state.language]?.role || specialist.role;
+}
+
+function getSpecialistNote(specialist) {
+  return (
+    localizedSpecialists[specialist.id]?.[state.language]?.note ||
+    localizedSpecialists[specialist.id]?.en?.note ||
+    specialist.note ||
+    "Trusted Heln specialist."
+  );
 }
 
 function getSpecialistIcon(name) {
