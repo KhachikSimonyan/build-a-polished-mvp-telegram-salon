@@ -129,10 +129,10 @@ async def send_booking_messages(application: Application | None, booking: dict) 
 
     user_message = "\n".join(
         [
-            "Ձեր Heln այցը հաստատված է։",
+            "Ձեր ELENA_ARAYI այցը հաստատված է։",
             "",
             f"{booking['serviceName']}՝ {booking['specialistName']}",
-            f"{booking['date']} ժամը {booking['time']}-{booking['endTime']}",
+            f"{booking['date']} ժամը {booking['time']}",
             "",
             f"Հաճախորդ՝ {booking['clientName']}",
             "Սիրով սպասում ենք Ձեզ։",
