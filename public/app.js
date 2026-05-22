@@ -3,11 +3,11 @@ const telegram = window.Telegram?.WebApp;
 const translations = {
   en: {
     privateAppointments: "Private salon appointments",
-    heroTitle: "Reserve your glow ritual.",
+    heroTitle: "Book your laser hair removal visit.",
     heroText:
-      "A polished booking flow for modern beauty salons, made to feel intimate, premium, and effortless inside Telegram.",
+      "A premium Heln booking experience for personal laser hair removal, consultations, and training.",
     todayMood: "Today's mood",
-    moodValue: "soft rose finish",
+    moodValue: "Elena Arayi Studio",
     begin: "Begin booking",
     back: "Go back",
     stepService: "Step 1 of 3",
@@ -384,13 +384,13 @@ const state = {
   slots: [],
   availabilityLoading: false,
   settings: {
-    salonName: "Maison Rose",
-    branchName: "Yerevan Studio",
-    brandColor: "#b76e79",
-    accentColor: "#dcc08c",
-    heroTitle: "",
-    heroText: "",
-    heroImageUrl: ""
+    salonName: "Heln",
+    branchName: "Elena Arayi Studio",
+    brandColor: "#064127",
+    accentColor: "#d7b84f",
+    heroTitle: "Ամրագրիր քո լազերային մազահեռացման այցը",
+    heroText: "Պրեմիում, անհատական եւ անվտանգ մոտեցում՝ Heln գեղեցկության ստուդիայում։",
+    heroImageUrl: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=1200&q=85"
   }
 };
 
@@ -778,12 +778,12 @@ async function loadCatalog() {
 
 function getServiceDescription(id) {
   const descriptions = {
-    "haircut-styling": "Shape, movement, and a refined finish for everyday polish.",
-    manicure: "Detailed nail care with a glossy Maison Rose finish.",
-    "facial-treatment": "A calm skin reset with glow-focused care.",
-    "hair-coloring": "Dimensional color, soft shine, and tailored tone work."
+    "haircut-styling": "Լազերային մազահեռացում կանանց համար՝ նուրբ, անվտանգ եւ անհատական։",
+    manicure: "Լազերային մազահեռացում տղամարդկանց համար՝ անհատական մոտեցմամբ։",
+    "facial-treatment": "Անհատական խորհրդատվություն՝ ճիշտ փաթեթը ընտրելու համար։",
+    "hair-coloring": "Մասնագիտական դասընթաց եւ սերտիֆիկացում Heln մոտեցմամբ։"
   };
-  return descriptions[id] || "Premium salon service with a tailored finish.";
+  return descriptions[id] || "Պրեմիում ծառայություն՝ անհատական մոտեցմամբ։";
 }
 
 function getServiceIcon(id) {
@@ -793,17 +793,17 @@ function getServiceIcon(id) {
     "facial-treatment": "FT",
     "hair-coloring": "HC"
   };
-  return icons[id] || "SR";
+  return icons[id] || "HL";
 }
 
 function getSpecialistNote(id) {
   const notes = {
-    "emily-rose": "Precision cuts, soft waves, and signature blowouts.",
+    "emily-rose": "Բացառիկ անհատական մոտեցում, անվտանգ տեխնոլոգիա եւ նուրբ արդյունք։",
     "sophia-martin": "Minimal, clean, high-gloss manicures.",
     "lily-anderson": "Hydration rituals and luminous skin treatments.",
     "ava-bennett": "Soft brunettes, rose tones, and champagne blondes."
   };
-  return notes[id] || "Trusted Maison Rose specialist.";
+  return notes[id] || "Heln վստահելի մասնագետ։";
 }
 
 function getSpecialistIcon(name) {

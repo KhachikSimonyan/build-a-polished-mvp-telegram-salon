@@ -4,7 +4,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppI
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
 from app.config import settings
-from app.database import BookingNotFound, SlotAlreadyBooked, get_booking, update_booking_status
+from app.database import BookingNotFound, SlotAlreadyBooked, get_booking, get_salon_settings, update_booking_status
 
 
 def is_owner(chat_id: int | str) -> bool:
@@ -43,8 +43,11 @@ def admin_markup() -> InlineKeyboardMarkup:
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     first_name = update.effective_user.first_name or "there"
+    pool = context.application.bot_data["pool"]
+    salon = await get_salon_settings(pool)
+    salon_name = salon.get("salonName") or "Heln"
     await update.message.reply_text(
-        f"Welcome, {first_name}. Step inside Maison Rose and reserve your next salon visit in a few elegant taps.",
+        f"Բարի գալուստ, {first_name}։ Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ եւ հարմար։",
         reply_markup=mini_app_markup(chat_id),
     )
 
@@ -56,7 +59,7 @@ async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         return
 
     await update.message.reply_text(
-        "Open your Maison Rose owner dashboard to manage bookings and staff schedules.",
+        "Բացիր ադմին վահանակը՝ ամրագրումները, ծառայությունները եւ գույները կառավարելու համար։",
         reply_markup=admin_markup(),
     )
 
@@ -126,19 +129,19 @@ async def send_booking_messages(application: Application | None, booking: dict) 
 
     user_message = "\n".join(
         [
-            "Your Maison Rose booking is confirmed.",
+            "Ձեր Heln այցը հաստատված է։",
             "",
-            f"{booking['serviceName']} with {booking['specialistName']}",
-            f"{booking['date']} at {booking['time']}-{booking['endTime']}",
+            f"{booking['serviceName']}՝ {booking['specialistName']}",
+            f"{booking['date']} ժամը {booking['time']}-{booking['endTime']}",
             "",
-            f"Client: {booking['clientName']}",
-            "We look forward to welcoming you.",
+            f"Հաճախորդ՝ {booking['clientName']}",
+            "Սիրով սպասում ենք Ձեզ։",
         ]
     )
 
-    user_buttons = [[InlineKeyboardButton("Cancel booking", callback_data=f"booking:cancel:{booking['id']}")]]
+    user_buttons = [[InlineKeyboardButton("Չեղարկել այցը", callback_data=f"booking:cancel:{booking['id']}")]]
     if settings.is_public_https_base_url:
-        user_buttons.append([InlineKeyboardButton("Change time", web_app=WebAppInfo(settings.base_url))])
+        user_buttons.append([InlineKeyboardButton("Փոխել ժամը", web_app=WebAppInfo(settings.base_url))])
 
     await application.bot.send_message(
         booking["telegramUserId"],
@@ -155,10 +158,10 @@ async def send_booking_messages(application: Application | None, booking: dict) 
             [
                 "New salon booking",
                 "",
-                f"{booking['serviceName']} with {booking['specialistName']}",
-                f"{booking['date']} at {booking['time']}-{booking['endTime']}",
-                f"Client: {escape(booking['clientName'])}",
-                f"Phone: {escape(booking['phone'])}",
+                f"{booking['serviceName']}՝ {booking['specialistName']}",
+                f"{booking['date']} ժամը {booking['time']}-{booking['endTime']}",
+                f"Հաճախորդ՝ {escape(booking['clientName'])}",
+                f"Հեռախոս՝ {escape(booking['phone'])}",
                 f"Telegram: {telegram_label}",
             ]
         )
@@ -169,15 +172,15 @@ async def send_booking_messages(application: Application | None, booking: dict) 
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Confirm", callback_data=f"admin:confirmed:{booking['id']}"),
-                        InlineKeyboardButton("Complete", callback_data=f"admin:completed:{booking['id']}"),
-                        InlineKeyboardButton("Cancel", callback_data=f"admin:cancelled:{booking['id']}"),
+                        InlineKeyboardButton("Հաստատել", callback_data=f"admin:confirmed:{booking['id']}"),
+                        InlineKeyboardButton("Ավարտել", callback_data=f"admin:completed:{booking['id']}"),
+                        InlineKeyboardButton("Չեղարկել", callback_data=f"admin:cancelled:{booking['id']}"),
                     ],
                     [
                         InlineKeyboardButton("No-show", callback_data=f"admin:no_show:{booking['id']}"),
-                        InlineKeyboardButton("Call client", callback_data=f"admin:phone:{booking['id']}"),
+                        InlineKeyboardButton("Հեռախոս", callback_data=f"admin:phone:{booking['id']}"),
                     ],
-                    [InlineKeyboardButton("Open admin", web_app=WebAppInfo(admin_url()))],
+                    [InlineKeyboardButton("Ադմին", web_app=WebAppInfo(admin_url()))],
                 ]
             ),
         )

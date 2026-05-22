@@ -6,17 +6,14 @@ import asyncpg
 
 
 SERVICES = [
-    ("haircut-styling", "Haircut & Styling", 60, "HS", "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80"),
-    ("manicure", "Manicure", 45, "MN", "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=900&q=80"),
-    ("facial-treatment", "Facial Treatment", 75, "FT", "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80"),
-    ("hair-coloring", "Hair Coloring", 120, "HC", "https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=900&q=80"),
+    ("haircut-styling", "Կանանց լազերային մազահեռացում", 60, "LH", "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=900&q=80"),
+    ("manicure", "Տղամարդկանց մազահեռացում", 60, "MEN", "https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?auto=format&fit=crop&w=900&q=80"),
+    ("facial-treatment", "Անհատական խորհրդատվություն", 30, "VIP", "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80"),
+    ("hair-coloring", "Դասընթաց եւ սերտիֆիկացում", 120, "EDU", "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80"),
 ]
 
 SPECIALISTS = [
-    ("emily-rose", "Emily Rose", "Senior Stylist", "10:00", "18:00", [], ["haircut-styling"]),
-    ("sophia-martin", "Sophia Martin", "Nail Artist", "11:00", "19:00", [], ["manicure"]),
-    ("lily-anderson", "Lily Anderson", "Skincare Expert", "10:00", "17:00", [1], ["facial-treatment"]),
-    ("ava-bennett", "Ava Bennett", "Color Specialist", "12:00", "20:00", [], ["hair-coloring"]),
+    ("emily-rose", "Elena Arayi", "Լազերային մազահեռացման մասնագետ", "10:00", "20:00", [], ["haircut-styling", "manicure", "facial-treatment", "hair-coloring"]),
 ]
 
 ALLOWED_STATUSES = {"confirmed", "cancelled", "completed", "no_show"}
@@ -249,12 +246,40 @@ async def init_db(pool: asyncpg.Pool) -> None:
             """
         )
 
+        await conn.execute(
+            """
+            UPDATE salon_settings
+            SET salon_name = 'Heln',
+                branch_name = 'Elena Arayi Studio',
+                brand_color = '#064127',
+                accent_color = '#d7b84f',
+                hero_title = 'Ամրագրիր քո լազերային մազահեռացման այցը',
+                hero_text = 'Պրեմիում, անհատական եւ անվտանգ մոտեցում՝ Heln գեղեցկության ստուդիայում։',
+                hero_image_url = 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=1200&q=85',
+                instagram = '@elena_arayi',
+                address = 'Yerevan, Armenia'
+            WHERE id = 1
+              AND salon_name = 'Maison Rose'
+            """
+        )
+
         for service_id, name, duration, icon, image_url in SERVICES:
             await conn.execute(
                 """
                 INSERT INTO services (id, name, duration_minutes, icon, image_url, active)
                 VALUES ($1, $2, $3, $4, $5, TRUE)
-                ON CONFLICT (id) DO NOTHING
+                ON CONFLICT (id) DO UPDATE
+                SET name = EXCLUDED.name,
+                    duration_minutes = EXCLUDED.duration_minutes,
+                    icon = EXCLUDED.icon,
+                    image_url = EXCLUDED.image_url,
+                    active = TRUE
+                WHERE services.name IN (
+                  'Haircut & Styling',
+                  'Manicure',
+                  'Facial Treatment',
+                  'Hair Coloring'
+                )
                 """,
                 service_id,
                 name,
@@ -268,7 +293,11 @@ async def init_db(pool: asyncpg.Pool) -> None:
                 """
                 INSERT INTO specialists (id, name, role, active)
                 VALUES ($1, $2, $3, TRUE)
-                ON CONFLICT (id) DO NOTHING
+                ON CONFLICT (id) DO UPDATE
+                SET name = EXCLUDED.name,
+                    role = EXCLUDED.role,
+                    active = TRUE
+                WHERE specialists.name IN ('Emily Rose', 'Elena Arayi')
                 """,
                 specialist_id,
                 name,
@@ -295,6 +324,15 @@ async def init_db(pool: asyncpg.Pool) -> None:
                     specialist_id,
                     service_id,
                 )
+
+        await conn.execute(
+            """
+            UPDATE specialists
+            SET active = FALSE
+            WHERE id IN ('sophia-martin', 'lily-anderson', 'ava-bennett')
+              AND name IN ('Sophia Martin', 'Lily Anderson', 'Ava Bennett')
+            """
+        )
 
 
 async def get_catalog(pool: asyncpg.Pool) -> dict[str, Any]:
