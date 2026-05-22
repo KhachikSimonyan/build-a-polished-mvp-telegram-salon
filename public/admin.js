@@ -68,6 +68,7 @@ let settings = {};
 let googleSheetState = null;
 let activeFilter = "all";
 let toastTimer;
+const adminSectionStateKey = "maisonRoseAdminSections";
 
 const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const dayLabelsByLanguage = {
@@ -347,6 +348,7 @@ calendarDate.value = toDateValue(new Date());
 manualDate.value = toDateValue(new Date());
 exceptionDate.value = toDateValue(new Date());
 renderAdminLanguage();
+setupAdminSections();
 applyAdminLanguage();
 
 adminLanguageSwitch.addEventListener("click", (event) => {
@@ -498,6 +500,104 @@ function renderAdminLanguage() {
       `
     )
     .join("");
+}
+
+function setupAdminSections() {
+  if (dashboard.dataset.sectionsReady === "true") {
+    return;
+  }
+
+  const savedState = readAdminSectionState();
+  const toolbars = Array.from(dashboard.children).filter((child) => child.classList.contains("admin-toolbar"));
+
+  toolbars.forEach((toolbar) => {
+    const title = toolbar.querySelector(".admin-section-title");
+    if (!title) {
+      return;
+    }
+
+    const sectionKey = sectionKeyFromTitle(title.textContent);
+    const section = document.createElement("article");
+    section.className = "admin-fold-section";
+    section.dataset.adminSection = sectionKey;
+
+    const header = document.createElement("button");
+    header.type = "button";
+    header.className = "admin-fold-header";
+    header.setAttribute("aria-expanded", "false");
+
+    const titleWrap = document.createElement("span");
+    titleWrap.className = "admin-fold-title";
+    titleWrap.append(title);
+
+    const chevron = document.createElement("span");
+    chevron.className = "admin-fold-chevron";
+    chevron.setAttribute("aria-hidden", "true");
+    chevron.textContent = "⌄";
+
+    const content = document.createElement("div");
+    content.className = "admin-fold-content";
+
+    header.append(titleWrap, chevron);
+    section.append(header, content);
+    dashboard.insertBefore(section, toolbar);
+
+    toolbar.classList.add("admin-section-controls");
+    content.append(toolbar);
+
+    let next = section.nextElementSibling;
+    while (next && !next.classList.contains("admin-toolbar") && !next.classList.contains("admin-fold-section")) {
+      const current = next;
+      next = next.nextElementSibling;
+      content.append(current);
+    }
+
+    const defaultOpen = sectionKey === "bookings";
+    const isOpen = savedState[sectionKey] ?? defaultOpen;
+    setAdminSectionOpen(section, isOpen);
+
+    header.addEventListener("click", () => {
+      const open = !section.classList.contains("is-open");
+      setAdminSectionOpen(section, open);
+      saveAdminSectionState();
+    });
+  });
+
+  dashboard.dataset.sectionsReady = "true";
+}
+
+function sectionKeyFromTitle(title) {
+  return title
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || "section";
+}
+
+function setAdminSectionOpen(section, open) {
+  const header = section.querySelector(".admin-fold-header");
+  const content = section.querySelector(".admin-fold-content");
+  section.classList.toggle("is-open", open);
+  header?.setAttribute("aria-expanded", String(open));
+  if (content) {
+    content.hidden = !open;
+  }
+}
+
+function readAdminSectionState() {
+  try {
+    return JSON.parse(localStorage.getItem(adminSectionStateKey) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveAdminSectionState() {
+  const state = {};
+  dashboard.querySelectorAll("[data-admin-section]").forEach((section) => {
+    state[section.dataset.adminSection] = section.classList.contains("is-open");
+  });
+  localStorage.setItem(adminSectionStateKey, JSON.stringify(state));
 }
 
 function setText(selector, key) {
