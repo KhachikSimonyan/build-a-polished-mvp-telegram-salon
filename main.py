@@ -104,6 +104,16 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Maison Rose Telegram Salon Booking", lifespan=lifespan)
 
 
+@app.middleware("http")
+async def no_cache_public_assets(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path in {"/", "/index.html", "/app.js", "/style.css", "/admin", "/admin.html", "/admin.js"}:
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
+
+
 def require_admin(password: str | None) -> None:
     if not settings.admin_password or password != settings.admin_password:
         raise HTTPException(status_code=401, detail="Admin password is required.")
