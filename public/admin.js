@@ -17,6 +17,8 @@ const createServiceForm = document.querySelector("#createServiceForm");
 const serviceAdminList = document.querySelector("#serviceAdminList");
 const newServiceName = document.querySelector("#newServiceName");
 const newServiceDuration = document.querySelector("#newServiceDuration");
+const newServiceIcon = document.querySelector("#newServiceIcon");
+const newServiceImageUrl = document.querySelector("#newServiceImageUrl");
 const specialistModal = document.querySelector("#specialistModal");
 const removeSpecialistModal = document.querySelector("#removeSpecialistModal");
 const removeSpecialistForm = document.querySelector("#removeSpecialistForm");
@@ -787,6 +789,14 @@ function renderServices() {
             <span>${tr("durationMinutes")}</span>
             <input type="number" min="15" step="15" value="${service.durationMinutes}" data-service-duration />
           </label>
+          <label class="field compact-field">
+            <span>Icon</span>
+            <input type="text" maxlength="8" value="${escapeHtml(service.icon || "")}" data-service-icon />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>Image URL</span>
+            <input type="url" value="${escapeHtml(service.imageUrl || "")}" data-service-image-url />
+          </label>
           <div class="admin-actions">
             <button class="admin-button primary" data-save-service>${tr("save")}</button>
             <button class="admin-button" data-toggle-service>${service.active ? tr("hide") : tr("restore")}</button>
@@ -993,12 +1003,16 @@ async function createService() {
     method: "POST",
     body: JSON.stringify({
       name: newServiceName.value.trim(),
-      durationMinutes: Number(newServiceDuration.value)
+      durationMinutes: Number(newServiceDuration.value),
+      icon: newServiceIcon.value.trim(),
+      imageUrl: newServiceImageUrl.value.trim()
     })
   });
 
   newServiceName.value = "";
   newServiceDuration.value = "";
+  newServiceIcon.value = "";
+  newServiceImageUrl.value = "";
   services = [...services, data.service];
   await loadSpecialists();
   showToast(tr("serviceAdded"));
@@ -1009,7 +1023,9 @@ async function saveService(id, card) {
     method: "PATCH",
     body: JSON.stringify({
       name: card.querySelector("[data-service-name]").value.trim(),
-      durationMinutes: Number(card.querySelector("[data-service-duration]").value)
+      durationMinutes: Number(card.querySelector("[data-service-duration]").value),
+      icon: card.querySelector("[data-service-icon]").value.trim(),
+      imageUrl: card.querySelector("[data-service-image-url]").value.trim()
     })
   });
 
@@ -1082,6 +1098,10 @@ async function loadSettings() {
   document.querySelector("#salonAddress").value = settings.address || "";
   document.querySelector("#salonInstagram").value = settings.instagram || "";
   document.querySelector("#brandColor").value = settings.brandColor || "#b76e79";
+  document.querySelector("#accentColor").value = settings.accentColor || "#dcc08c";
+  document.querySelector("#heroTitle").value = settings.heroTitle || "";
+  document.querySelector("#heroText").value = settings.heroText || "";
+  document.querySelector("#heroImageUrl").value = settings.heroImageUrl || "";
   document.querySelector("#depositRequired").checked = Boolean(settings.depositRequired);
   document.querySelector("#depositAmount").value = settings.depositAmount || 0;
   document.querySelector("#remindersEnabled").checked = Boolean(settings.remindersEnabled);
@@ -1098,6 +1118,10 @@ async function saveSettings() {
       address: document.querySelector("#salonAddress").value.trim(),
       instagram: document.querySelector("#salonInstagram").value.trim(),
       brandColor: document.querySelector("#brandColor").value,
+      accentColor: document.querySelector("#accentColor").value,
+      heroTitle: document.querySelector("#heroTitle").value.trim(),
+      heroText: document.querySelector("#heroText").value.trim(),
+      heroImageUrl: document.querySelector("#heroImageUrl").value.trim(),
       depositRequired: document.querySelector("#depositRequired").checked,
       depositAmount: Number(document.querySelector("#depositAmount").value),
       remindersEnabled: document.querySelector("#remindersEnabled").checked,

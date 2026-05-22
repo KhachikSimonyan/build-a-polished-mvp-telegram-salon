@@ -193,6 +193,10 @@ async def init_db(pool: asyncpg.Pool) -> None:
               salon_name TEXT NOT NULL DEFAULT 'Maison Rose',
               branch_name TEXT NOT NULL DEFAULT 'Yerevan Studio',
               brand_color TEXT NOT NULL DEFAULT '#b76e79',
+              accent_color TEXT NOT NULL DEFAULT '#dcc08c',
+              hero_title TEXT NOT NULL DEFAULT '',
+              hero_text TEXT NOT NULL DEFAULT '',
+              hero_image_url TEXT NOT NULL DEFAULT '',
               phone TEXT NOT NULL DEFAULT '+374 77 123 456',
               address TEXT NOT NULL DEFAULT 'Yerevan, Armenia',
               instagram TEXT NOT NULL DEFAULT '@maisonrose',
@@ -206,6 +210,15 @@ async def init_db(pool: asyncpg.Pool) -> None:
             INSERT INTO salon_settings (id)
             VALUES (1)
             ON CONFLICT (id) DO NOTHING;
+
+            ALTER TABLE salon_settings
+              ADD COLUMN IF NOT EXISTS accent_color TEXT NOT NULL DEFAULT '#dcc08c';
+            ALTER TABLE salon_settings
+              ADD COLUMN IF NOT EXISTS hero_title TEXT NOT NULL DEFAULT '';
+            ALTER TABLE salon_settings
+              ADD COLUMN IF NOT EXISTS hero_text TEXT NOT NULL DEFAULT '';
+            ALTER TABLE salon_settings
+              ADD COLUMN IF NOT EXISTS hero_image_url TEXT NOT NULL DEFAULT '';
 
             CREATE TABLE IF NOT EXISTS specialist_exceptions (
               id UUID PRIMARY KEY,
@@ -821,6 +834,8 @@ async def create_specialist(pool: asyncpg.Pool, payload: dict[str, Any]) -> dict
 async def create_service(pool: asyncpg.Pool, payload: dict[str, Any]) -> dict[str, Any]:
     name = str(payload.get("name", "")).strip()
     duration_minutes = int(payload.get("durationMinutes", 0) or 0)
+    icon = str(payload.get("icon", "")).strip()[:8]
+    image_url = str(payload.get("imageUrl", "")).strip()
 
     if not name:
         raise ValueError("Service name is required.")
@@ -834,13 +849,15 @@ async def create_service(pool: asyncpg.Pool, payload: dict[str, Any]) -> dict[st
             service_id = f"{service_id}-{uuid.uuid4().hex[:6]}"
         row = await conn.fetchrow(
             """
-            INSERT INTO services (id, name, duration_minutes, active)
-            VALUES ($1, $2, $3, TRUE)
+            INSERT INTO services (id, name, duration_minutes, icon, image_url, active)
+            VALUES ($1, $2, $3, $4, $5, TRUE)
             RETURNING *
             """,
             service_id,
             name,
             duration_minutes,
+            icon,
+            image_url,
         )
     return service_to_dict(row)
 
@@ -848,6 +865,8 @@ async def create_service(pool: asyncpg.Pool, payload: dict[str, Any]) -> dict[st
 async def update_service(pool: asyncpg.Pool, service_id: str, payload: dict[str, Any]) -> dict[str, Any]:
     name = str(payload.get("name", "")).strip()
     duration_minutes = int(payload.get("durationMinutes", 0) or 0)
+    icon = str(payload.get("icon", "")).strip()[:8]
+    image_url = str(payload.get("imageUrl", "")).strip()
 
     if not name:
         raise ValueError("Service name is required.")
@@ -858,13 +877,18 @@ async def update_service(pool: asyncpg.Pool, service_id: str, payload: dict[str,
         row = await conn.fetchrow(
             """
             UPDATE services
-            SET name = $2, duration_minutes = $3
+            SET name = $2,
+                duration_minutes = $3,
+                icon = $4,
+                image_url = $5
             WHERE id = $1
             RETURNING *
             """,
             service_id,
             name,
             duration_minutes,
+            icon,
+            image_url,
         )
     if not row:
         raise ValueError("Service not found.")
@@ -948,6 +972,10 @@ def settings_to_dict(row: asyncpg.Record) -> dict[str, Any]:
         "salonName": row["salon_name"],
         "branchName": row["branch_name"],
         "brandColor": row["brand_color"],
+        "accentColor": row["accent_color"],
+        "heroTitle": row["hero_title"],
+        "heroText": row["hero_text"],
+        "heroImageUrl": row["hero_image_url"],
         "phone": row["phone"],
         "address": row["address"],
         "instagram": row["instagram"],
@@ -979,19 +1007,27 @@ async def update_salon_settings(pool: asyncpg.Pool, payload: dict[str, Any]) -> 
             SET salon_name = $1,
                 branch_name = $2,
                 brand_color = $3,
-                phone = $4,
-                address = $5,
-                instagram = $6,
-                deposit_required = $7,
-                deposit_amount = $8,
-                reminders_enabled = $9,
-                reminder_hours = $10
+                accent_color = $4,
+                hero_title = $5,
+                hero_text = $6,
+                hero_image_url = $7,
+                phone = $8,
+                address = $9,
+                instagram = $10,
+                deposit_required = $11,
+                deposit_amount = $12,
+                reminders_enabled = $13,
+                reminder_hours = $14
             WHERE id = 1
             RETURNING *
             """,
             str(payload.get("salonName", "Maison Rose")).strip() or "Maison Rose",
             str(payload.get("branchName", "Yerevan Studio")).strip() or "Yerevan Studio",
             str(payload.get("brandColor", "#b76e79")).strip() or "#b76e79",
+            str(payload.get("accentColor", "#dcc08c")).strip() or "#dcc08c",
+            str(payload.get("heroTitle", "")).strip(),
+            str(payload.get("heroText", "")).strip(),
+            str(payload.get("heroImageUrl", "")).strip(),
             str(payload.get("phone", "")).strip(),
             str(payload.get("address", "")).strip(),
             str(payload.get("instagram", "")).strip(),

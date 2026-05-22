@@ -75,6 +75,22 @@
             <span>Brand color</span>
             <input type="color" id="brandColor" />
           </label>
+          <label class="field compact-field">
+            <span>Accent color</span>
+            <input type="color" id="accentColor" />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>Hero title</span>
+            <input type="text" id="heroTitle" placeholder="Reserve your glow ritual." />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>Hero text</span>
+            <input type="text" id="heroText" placeholder="Premium booking experience for your salon." />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>Hero image URL</span>
+            <input type="url" id="heroImageUrl" placeholder="https://images.unsplash.com/..." />
+          </label>
           <label class="toggle-line">
             <input type="checkbox" id="depositRequired" />
             <span>Require deposit</span>
@@ -225,6 +241,14 @@
           <label class="field compact-field">
             <span>Duration minutes</span>
             <input type="number" id="newServiceDuration" min="15" step="15" placeholder="45" />
+          </label>
+          <label class="field compact-field">
+            <span>Icon</span>
+            <input type="text" id="newServiceIcon" maxlength="8" placeholder="BR" />
+          </label>
+          <label class="field compact-field wide-field">
+            <span>Image URL</span>
+            <input type="url" id="newServiceImageUrl" placeholder="https://images.unsplash.com/..." />
           </label>
           <button class="admin-button primary" type="submit">Add service</button>
         </form>

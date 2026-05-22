@@ -382,7 +382,16 @@ const state = {
   date: "",
   time: "",
   slots: [],
-  availabilityLoading: false
+  availabilityLoading: false,
+  settings: {
+    salonName: "Maison Rose",
+    branchName: "Yerevan Studio",
+    brandColor: "#b76e79",
+    accentColor: "#dcc08c",
+    heroTitle: "",
+    heroText: "",
+    heroImageUrl: ""
+  }
 };
 
 let availabilityRequestId = 0;
@@ -468,13 +477,22 @@ function renderLanguageSwitch() {
 }
 
 function renderStaticText() {
+  const salonName = state.settings.salonName || "Maison Rose";
+  const branchName = state.settings.branchName || t("moodValue");
   document.documentElement.lang = state.language === "hy" ? "hy" : state.language;
   document.body.dataset.language = state.language;
+  document.title = `${salonName} Booking`;
+  document.querySelectorAll(".brand-row").forEach((row) => {
+    const mark = row.querySelector(".brand-mark");
+    const label = row.querySelector("span:not(.brand-mark)");
+    if (mark) mark.textContent = getBrandInitials(salonName);
+    if (label) label.textContent = salonName;
+  });
   document.querySelector("[data-i18n='privateAppointments']").textContent = t("privateAppointments");
-  document.querySelector("[data-i18n='heroTitle']").textContent = t("heroTitle");
-  document.querySelector("[data-i18n='heroText']").textContent = t("heroText");
+  document.querySelector("[data-i18n='heroTitle']").textContent = state.settings.heroTitle || t("heroTitle");
+  document.querySelector("[data-i18n='heroText']").textContent = state.settings.heroText || t("heroText");
   document.querySelector("[data-i18n='todayMood']").textContent = t("todayMood");
-  document.querySelector("[data-i18n='moodValue']").textContent = t("moodValue");
+  document.querySelector("[data-i18n='moodValue']").textContent = branchName;
   document.querySelector("#startBooking").textContent = t("begin");
   document.querySelector("#backButton").setAttribute("aria-label", t("back"));
   document.querySelector("[data-i18n='date']").textContent = t("date");
@@ -485,6 +503,52 @@ function renderStaticText() {
   document.querySelector("[data-i18n='successTitle']").textContent = t("successTitle");
   document.querySelector("#closeApp").textContent = t("close");
   submitButton.textContent = t("confirm");
+  applyBrandTheme();
+}
+
+function applyBrandTheme() {
+  const brandColor = normalizeHexColor(state.settings.brandColor, "#b76e79");
+  const accentColor = normalizeHexColor(state.settings.accentColor, "#dcc08c");
+  document.documentElement.style.setProperty("--rose-500", brandColor);
+  document.documentElement.style.setProperty("--rose-700", shadeColor(brandColor, -24));
+  document.documentElement.style.setProperty("--rose-900", shadeColor(brandColor, -55));
+  document.documentElement.style.setProperty("--rose-300", shadeColor(brandColor, 42));
+  document.documentElement.style.setProperty("--rose-100", shadeColor(brandColor, 82));
+  document.documentElement.style.setProperty("--champagne", accentColor);
+  document.documentElement.style.setProperty("--hero-image", `url("${sanitizeCssUrl(state.settings.heroImageUrl)}")`);
+  telegram?.setHeaderColor?.(shadeColor(brandColor, 82));
+  telegram?.setBackgroundColor?.(shadeColor(brandColor, 88));
+}
+
+function getBrandInitials(name) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase() || "MR";
+}
+
+function normalizeHexColor(value, fallback) {
+  return /^#[0-9a-f]{6}$/i.test(value || "") ? value : fallback;
+}
+
+function shadeColor(hex, percent) {
+  const normalized = normalizeHexColor(hex, "#b76e79").slice(1);
+  const number = parseInt(normalized, 16);
+  const amount = Math.round(2.55 * percent);
+  const red = Math.max(0, Math.min(255, (number >> 16) + amount));
+  const green = Math.max(0, Math.min(255, ((number >> 8) & 0x00ff) + amount));
+  const blue = Math.max(0, Math.min(255, (number & 0x0000ff) + amount));
+  return `#${(0x1000000 + red * 0x10000 + green * 0x100 + blue).toString(16).slice(1)}`;
+}
+
+function sanitizeCssUrl(value) {
+  const fallback = "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80";
+  const url = String(value || "").trim();
+  if (!url || !/^https?:\/\//i.test(url)) return fallback;
+  return url.replaceAll('"', "%22");
 }
 
 function renderCards() {
@@ -699,6 +763,10 @@ async function loadCatalog() {
       note: getSpecialistNote(specialist.id),
       icon: getSpecialistIcon(specialist.name)
     }));
+    state.settings = {
+      ...state.settings,
+      ...(data.settings || {})
+    };
     renderStep();
   } catch (error) {
     errorMessage.textContent = error.message || t("error");

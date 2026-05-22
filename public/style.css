@@ -8,6 +8,7 @@
   --nude-100: #fff8f4;
   --nude-200: #f7ebe4;
   --champagne: #dcc08c;
+  --hero-image: url("https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80");
   --ink: #32272a;
   --muted: #8e7478;
   --white: #ffffff;
@@ -56,7 +57,7 @@ button {
   border-radius: 32px;
   background:
     linear-gradient(165deg, rgba(255, 255, 255, 0.94), rgba(255, 247, 242, 0.88)),
-    url("https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80");
+    var(--hero-image);
   background-size: cover;
   background-blend-mode: screen;
   box-shadow: var(--shadow);
@@ -806,7 +807,7 @@ select {
 
 .service-admin-card {
   display: grid;
-  grid-template-columns: 1fr 150px;
+  grid-template-columns: 1fr 150px 96px;
   gap: 12px;
   padding: 16px;
   border: 1px solid rgba(232, 184, 189, 0.55);
@@ -820,6 +821,10 @@ select {
 }
 
 .service-admin-card .admin-actions {
+  grid-column: 1 / -1;
+}
+
+.wide-field {
   grid-column: 1 / -1;
 }
 
