@@ -514,6 +514,9 @@ function applyBrandTheme() {
   document.documentElement.style.setProperty("--rose-900", shadeColor(brandColor, -55));
   document.documentElement.style.setProperty("--rose-300", shadeColor(brandColor, 42));
   document.documentElement.style.setProperty("--rose-100", shadeColor(brandColor, 82));
+  document.documentElement.style.setProperty("--page-start", shadeColor(brandColor, 90));
+  document.documentElement.style.setProperty("--page-mid", shadeColor(brandColor, 84));
+  document.documentElement.style.setProperty("--page-end", shadeColor(accentColor, 62));
   document.documentElement.style.setProperty("--champagne", accentColor);
   document.documentElement.style.setProperty("--hero-image", `url("${sanitizeCssUrl(state.settings.heroImageUrl)}")`);
   telegram?.setHeaderColor?.(shadeColor(brandColor, 82));

@@ -96,13 +96,17 @@ const adminTranslations = {
     enterPassword: "Enter password",
     openDashboard: "Open dashboard",
     salonProfile: "Salon profile",
-    salonProfileNote: "Brand, branch, deposit and reminder settings.",
+    salonProfileNote: "Change the client demo name, colors, cover image, deposit and reminder settings.",
     salonName: "Salon name",
     branch: "Branch",
     phone: "Phone",
     address: "Address",
     instagram: "Instagram",
     brandColor: "Brand color",
+    accentColor: "Accent color",
+    heroTitle: "Hero title",
+    heroText: "Hero text",
+    heroImageUrl: "Hero image URL",
     requireDeposit: "Require deposit",
     depositAmount: "Deposit amount",
     reminderMessages: "Reminder messages",
@@ -549,6 +553,7 @@ function applyAdminLanguage() {
   });
 
   setMutedText("Brand, branch, deposit and reminder settings.", "salonProfileNote");
+  setMutedText("Change the client demo name, colors, cover image, deposit and reminder settings.", "salonProfileNote");
   setMutedText("Use Google Sheet for services, specialists, weekly hours, exceptions, and manual bookings.", "googleSheetHelp");
   setMutedText("Use this for phone or Instagram bookings.", "manualBookingNote");
   setMutedText("Special vacation days or one-day custom hours.", "availabilityExceptionsNote");
@@ -579,6 +584,10 @@ function translateLabels() {
     Address: "address",
     Instagram: "instagram",
     "Brand color": "brandColor",
+    "Accent color": "accentColor",
+    "Hero title": "heroTitle",
+    "Hero text": "heroText",
+    "Hero image URL": "heroImageUrl",
     "Deposit amount": "depositAmount",
     "Reminder hours before": "reminderHoursBefore",
     Day: "day",
@@ -1106,6 +1115,7 @@ async function loadSettings() {
   document.querySelector("#depositAmount").value = settings.depositAmount || 0;
   document.querySelector("#remindersEnabled").checked = Boolean(settings.remindersEnabled);
   document.querySelector("#reminderHours").value = settings.reminderHours || 24;
+  applyAdminBrandTheme();
 }
 
 async function saveSettings() {
@@ -1129,7 +1139,65 @@ async function saveSettings() {
     })
   });
   settings = data.settings;
+  applyAdminBrandTheme();
   showToast(tr("salonProfileSaved"));
+}
+
+function applyAdminBrandTheme() {
+  const salonName = settings.salonName || "Maison Rose";
+  const branchName = settings.branchName || "Admin";
+  const brandColor = normalizeHexColor(settings.brandColor, "#b76e79");
+  const accentColor = normalizeHexColor(settings.accentColor, "#dcc08c");
+
+  document.title = `${salonName} Admin`;
+  document.documentElement.style.setProperty("--rose-500", brandColor);
+  document.documentElement.style.setProperty("--rose-700", shadeColor(brandColor, -24));
+  document.documentElement.style.setProperty("--rose-900", shadeColor(brandColor, -55));
+  document.documentElement.style.setProperty("--rose-300", shadeColor(brandColor, 42));
+  document.documentElement.style.setProperty("--rose-100", shadeColor(brandColor, 82));
+  document.documentElement.style.setProperty("--page-start", shadeColor(brandColor, 90));
+  document.documentElement.style.setProperty("--page-mid", shadeColor(brandColor, 84));
+  document.documentElement.style.setProperty("--page-end", shadeColor(accentColor, 62));
+  document.documentElement.style.setProperty("--champagne", accentColor);
+  document.documentElement.style.setProperty("--hero-image", `url("${sanitizeCssUrl(settings.heroImageUrl)}")`);
+
+  document.querySelectorAll(".brand-row").forEach((row) => {
+    const mark = row.querySelector(".brand-mark");
+    const label = row.querySelector("span:not(.brand-mark)");
+    if (mark) mark.textContent = getBrandInitials(salonName);
+    if (label) label.textContent = `${salonName} ${branchName}`;
+  });
+}
+
+function getBrandInitials(name) {
+  return String(name || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase() || "MR";
+}
+
+function normalizeHexColor(value, fallback) {
+  return /^#[0-9a-f]{6}$/i.test(value || "") ? value : fallback;
+}
+
+function shadeColor(hex, percent) {
+  const normalized = normalizeHexColor(hex, "#b76e79").slice(1);
+  const number = parseInt(normalized, 16);
+  const amount = Math.round(2.55 * percent);
+  const red = Math.max(0, Math.min(255, (number >> 16) + amount));
+  const green = Math.max(0, Math.min(255, ((number >> 8) & 0x00ff) + amount));
+  const blue = Math.max(0, Math.min(255, (number & 0x0000ff) + amount));
+  return `#${(0x1000000 + red * 0x10000 + green * 0x100 + blue).toString(16).slice(1)}`;
+}
+
+function sanitizeCssUrl(value) {
+  const fallback = "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80";
+  const url = String(value || "").trim();
+  if (!url || !/^https?:\/\//i.test(url)) return fallback;
+  return url.replaceAll('"', "%22");
 }
 
 async function loadAnalytics() {
