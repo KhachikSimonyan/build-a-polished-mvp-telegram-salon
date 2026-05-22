@@ -52,7 +52,9 @@ $envContent = [regex]::Replace($envContent, "(?m)^DISABLE_TELEGRAM_BOT=.*$", "DI
 [System.IO.File]::WriteAllText((Resolve-Path $envPath), $envContent, (New-Object System.Text.UTF8Encoding($false)))
 
 Write-Host "Restarting app so Telegram uses the public URL..."
-& "$PSScriptRoot\stop_demo.ps1"
+Get-CimInstance Win32_Process |
+  Where-Object { $_.CommandLine -like "*uvicorn*main:app*" } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 Start-Sleep -Seconds 2
 Start-Process -FilePath (Join-Path $ProjectRoot ".venv\Scripts\python.exe") -ArgumentList @("-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", $Port) -WorkingDirectory $ProjectRoot -WindowStyle Hidden
 
