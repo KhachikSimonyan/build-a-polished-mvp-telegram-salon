@@ -26,6 +26,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   color: var(--ink);
   background:
     radial-gradient(circle at top left, var(--rose-300), transparent 30%),
@@ -430,6 +431,10 @@ select {
   scrollbar-width: thin;
 }
 
+.time-grid::-webkit-scrollbar {
+  height: 0;
+}
+
 .time-chip {
   flex: 0 0 auto;
   min-width: 78px;
@@ -534,6 +539,7 @@ select {
   width: min(100%, 1120px);
   margin: 0 auto;
   padding: 28px 18px 48px;
+  overflow-x: hidden;
 }
 
 .admin-header {
@@ -579,6 +585,7 @@ select {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  min-width: 0;
 }
 
 .admin-dashboard {
@@ -667,6 +674,7 @@ select {
 
 .admin-fold-content {
   padding: 0 18px 18px;
+  min-width: 0;
 }
 
 .admin-section-controls {
@@ -684,6 +692,7 @@ select {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 28px;
+  min-width: 0;
 }
 
 .admin-management-grid {
@@ -779,6 +788,7 @@ select {
 
 .compact-item {
   padding: 12px;
+  min-width: 0;
 }
 
 .stat-card,
@@ -839,6 +849,8 @@ select {
   color: var(--rose-900);
   background: rgba(255, 255, 255, 0.78);
   font-weight: 800;
+  max-width: 100%;
+  white-space: normal;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
@@ -875,6 +887,7 @@ select {
 .booking-list {
   display: grid;
   gap: 12px;
+  min-width: 0;
 }
 
 .staff-grid {
@@ -916,6 +929,7 @@ select {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
+  min-width: 0;
 }
 
 .service-admin-card.is-muted {
@@ -981,6 +995,7 @@ select {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+  min-width: 0;
 }
 
 .staff-card {
@@ -1342,10 +1357,48 @@ body[data-admin-language="hy"] .admin-header p {
 }
 
 @media (max-width: 760px) {
+  .admin-shell {
+    padding: 16px 10px 32px;
+  }
+
+  .admin-login,
+  .admin-dashboard {
+    border-radius: 22px;
+    padding: 12px;
+  }
+
   .admin-header,
   .booking-card {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .admin-fold-header {
+    min-height: 64px;
+    padding: 14px 14px;
+  }
+
+  .admin-fold-header .admin-section-title {
+    font-size: 27px;
+  }
+
+  .admin-fold-chevron {
+    width: 34px;
+    height: 34px;
+  }
+
+  .admin-fold-content {
+    padding: 0 10px 12px;
+  }
+
+  .admin-management-grid,
+  .staff-create,
+  .service-section,
+  .staff-card,
+  .booking-card,
+  .service-admin-card {
+    padding: 12px;
+    border-radius: 18px;
   }
 
   .stats-grid {
@@ -1366,5 +1419,23 @@ body[data-admin-language="hy"] .admin-header p {
 
   .day-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .compact-item,
+  .insight-card p {
+    display: grid;
+    justify-content: start;
+  }
+
+  .booking-card .admin-actions,
+  .service-admin-card .admin-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .booking-card .admin-button,
+  .service-admin-card .admin-button,
+  .staff-card .admin-button {
+    width: 100%;
   }
 }
