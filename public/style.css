@@ -421,18 +421,27 @@ select {
 }
 
 .time-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 9px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .time-chip {
-  min-height: 44px;
+  flex: 0 0 auto;
+  min-width: 78px;
+  min-height: 38px;
+  padding: 0 14px;
   border: 1px solid rgba(232, 184, 189, 0.75);
   border-radius: 999px;
   color: var(--rose-900);
   background: rgba(255, 255, 255, 0.84);
   font-weight: 700;
+  white-space: nowrap;
+  scroll-snap-align: start;
 }
 
 .time-chip.selected {
@@ -450,6 +459,7 @@ select {
 }
 
 .availability-note {
+  flex: 1 0 100%;
   grid-column: 1 / -1;
   margin: 4px 0;
   color: var(--muted);

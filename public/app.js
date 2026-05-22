@@ -312,6 +312,352 @@ Object.assign(translations.ru, {
   close: "Закрыть"
 });
 
+Object.assign(translations.en, {
+  privateAppointments: "Private laser studio appointments",
+  heroTitle: "Book your laser hair removal visit.",
+  heroText: "A premium Heln booking experience for laser hair removal, consultations, and professional training.",
+  todayMood: "Studio",
+  moodValue: "Elena Arayi Studio",
+  begin: "Book now",
+  back: "Go back",
+  stepService: "Step 1 of 3",
+  stepSpecialist: "Step 2 of 3",
+  stepTime: "Step 3 of 3",
+  chooseService: "Choose a service",
+  chooseSpecialist: "Choose your specialist",
+  selectTime: "Choose date and time",
+  service: "Service",
+  specialist: "Specialist",
+  date: "Date",
+  availableTimes: "Available times",
+  name: "Your name",
+  phone: "Phone number",
+  confirm: "Confirm booking",
+  reserving: "Booking...",
+  checking: "Checking available times...",
+  booked: "busy",
+  noSlots: "No available times for this day.",
+  completeEveryDetail: "Please fill in all details before confirming.",
+  alreadyBooked: "This time is already busy. Please choose another time.",
+  error: "Something went wrong. Please try again.",
+  successEyebrow: "Booking confirmed",
+  successTitle: "Your visit is booked.",
+  sent: "A Telegram confirmation has been sent.",
+  close: "Close"
+});
+
+Object.assign(translations.hy, {
+  privateAppointments: "Լազերային ստուդիայի ամրագրումներ",
+  heroTitle: "Ամրագրիր քո լազերային մազահեռացման այցը",
+  heroText: "Պրեմիում, անհատական եւ անվտանգ մոտեցում՝ Heln գեղեցկության ստուդիայում։",
+  todayMood: "Ստուդիա",
+  moodValue: "Elena Arayi Studio",
+  begin: "Ամրագրել",
+  back: "Վերադառնալ",
+  stepService: "Քայլ 1 / 3",
+  stepSpecialist: "Քայլ 2 / 3",
+  stepTime: "Քայլ 3 / 3",
+  chooseService: "Ընտրիր ծառայությունը",
+  chooseSpecialist: "Ընտրիր մասնագետին",
+  selectTime: "Ընտրիր օրը եւ ժամը",
+  service: "Ծառայություն",
+  specialist: "Մասնագետ",
+  date: "Ամսաթիվ",
+  availableTimes: "Ազատ ժամեր",
+  name: "Քո անունը",
+  phone: "Հեռախոս",
+  confirm: "Հաստատել այցը",
+  reserving: "Ամրագրում ենք...",
+  checking: "Ստուգում ենք ազատ ժամերը...",
+  booked: "զբաղված",
+  noSlots: "Այդ օրվա համար ազատ ժամեր չկան։",
+  completeEveryDetail: "Լրացրու բոլոր տվյալները՝ ամրագրումը հաստատելու համար։",
+  alreadyBooked: "Այս ժամը արդեն զբաղված է։ Ընտրիր ուրիշ ժամ։",
+  error: "Ինչ-որ բան սխալ գնաց։ Փորձիր նորից։",
+  successEyebrow: "Այցը հաստատված է",
+  successTitle: "Քո այցը ամրագրված է։",
+  sent: "Telegram հաստատումն ուղարկվել է։",
+  close: "Փակել"
+});
+
+Object.assign(translations.ru, {
+  privateAppointments: "Запись в лазерную студию",
+  heroTitle: "Запишитесь на лазерную эпиляцию.",
+  heroText: "Премиальная запись Heln для лазерной эпиляции, консультаций и профессионального обучения.",
+  todayMood: "Студия",
+  moodValue: "Elena Arayi Studio",
+  begin: "Записаться",
+  back: "Назад",
+  stepService: "Шаг 1 из 3",
+  stepSpecialist: "Шаг 2 из 3",
+  stepTime: "Шаг 3 из 3",
+  chooseService: "Выберите услугу",
+  chooseSpecialist: "Выберите специалиста",
+  selectTime: "Выберите дату и время",
+  service: "Услуга",
+  specialist: "Специалист",
+  date: "Дата",
+  availableTimes: "Свободное время",
+  name: "Ваше имя",
+  phone: "Телефон",
+  confirm: "Подтвердить запись",
+  reserving: "Записываем...",
+  checking: "Проверяем свободное время...",
+  booked: "занято",
+  noSlots: "На этот день нет свободного времени.",
+  completeEveryDetail: "Заполните все данные перед подтверждением.",
+  alreadyBooked: "Это время уже занято. Выберите другое.",
+  error: "Что-то пошло не так. Попробуйте еще раз.",
+  successEyebrow: "Запись подтверждена",
+  successTitle: "Ваш визит забронирован.",
+  sent: "Подтверждение отправлено в Telegram.",
+  close: "Закрыть"
+});
+
+const localizedServices = {
+  "haircut-styling": {
+    en: {
+      name: "Women's laser hair removal",
+      description: "A careful laser hair removal visit with a personal plan."
+    },
+    hy: {
+      name: "Կանանց լազերային մազահեռացում",
+      description: "Նուրբ եւ անվտանգ լազերային մազահեռացում՝ անհատական մոտեցմամբ։"
+    },
+    ru: {
+      name: "Женская лазерная эпиляция",
+      description: "Деликатная лазерная эпиляция с индивидуальным подходом."
+    }
+  },
+  manicure: {
+    en: {
+      name: "Men's laser hair removal",
+      description: "Comfortable laser hair removal for men with a private approach."
+    },
+    hy: {
+      name: "Տղամարդկանց մազահեռացում",
+      description: "Լազերային մազահեռացում տղամարդկանց համար՝ հարմար եւ անհատական։"
+    },
+    ru: {
+      name: "Мужская лазерная эпиляция",
+      description: "Комфортная лазерная эпиляция для мужчин."
+    }
+  },
+  "facial-treatment": {
+    en: {
+      name: "Personal consultation",
+      description: "Choose the right package and schedule with a specialist."
+    },
+    hy: {
+      name: "Անհատական խորհրդատվություն",
+      description: "Ընտրիր ճիշտ փաթեթը եւ գրաֆիկը մասնագետի հետ։"
+    },
+    ru: {
+      name: "Индивидуальная консультация",
+      description: "Подберите подходящий пакет и график со специалистом."
+    }
+  },
+  "hair-coloring": {
+    en: {
+      name: "Training and certification",
+      description: "Professional training for beauty specialists."
+    },
+    hy: {
+      name: "Դասընթաց եւ սերտիֆիկացում",
+      description: "Մասնագիտական դասընթաց գեղեցկության ոլորտի մասնագետների համար։"
+    },
+    ru: {
+      name: "Обучение и сертификация",
+      description: "Профессиональное обучение для beauty-специалистов."
+    }
+  }
+};
+
+Object.assign(translations.en, {
+  privateAppointments: "Private laser studio appointments",
+  heroTitle: "Book your laser hair removal visit.",
+  heroText: "A premium Heln booking experience for laser hair removal, consultations, and professional training.",
+  todayMood: "Studio",
+  moodValue: "Elena Arayi Studio",
+  begin: "Book now",
+  back: "Go back",
+  stepService: "Step 1 of 3",
+  stepSpecialist: "Step 2 of 3",
+  stepTime: "Step 3 of 3",
+  chooseService: "Choose a service",
+  chooseSpecialist: "Choose your specialist",
+  selectTime: "Choose date and time",
+  service: "Service",
+  specialist: "Specialist",
+  date: "Date",
+  availableTimes: "Available times",
+  name: "Your name",
+  phone: "Phone number",
+  confirm: "Confirm booking",
+  reserving: "Booking...",
+  checking: "Checking available times...",
+  booked: "busy",
+  noSlots: "No available times for this day.",
+  completeEveryDetail: "Please fill in all details before confirming.",
+  alreadyBooked: "This time is already busy. Please choose another time.",
+  error: "Something went wrong. Please try again.",
+  successEyebrow: "Booking confirmed",
+  successTitle: "Your visit is booked.",
+  sent: "A Telegram confirmation has been sent.",
+  close: "Close",
+  with: "with",
+  on: "on",
+  at: "at"
+});
+
+Object.assign(translations.hy, {
+  privateAppointments: "Լազերային ստուդիայի ամրագրումներ",
+  heroTitle: "Ամրագրիր քո լազերային մազահեռացման այցը",
+  heroText: "Պրեմիում, անհատական եւ անվտանգ մոտեցում Heln գեղեցկության ստուդիայում։",
+  todayMood: "Ստուդիա",
+  moodValue: "Elena Arayi Studio",
+  begin: "Ամրագրել",
+  back: "Վերադառնալ",
+  stepService: "Քայլ 1 / 3",
+  stepSpecialist: "Քայլ 2 / 3",
+  stepTime: "Քայլ 3 / 3",
+  chooseService: "Ընտրիր ծառայությունը",
+  chooseSpecialist: "Ընտրիր մասնագետին",
+  selectTime: "Ընտրիր օրը եւ ժամը",
+  service: "Ծառայություն",
+  specialist: "Մասնագետ",
+  date: "Ամսաթիվ",
+  availableTimes: "Ազատ ժամեր",
+  name: "Քո անունը",
+  phone: "Հեռախոս",
+  confirm: "Հաստատել այցը",
+  reserving: "Ամրագրում ենք...",
+  checking: "Ստուգում ենք ազատ ժամերը...",
+  booked: "զբաղված",
+  noSlots: "Այդ օրվա համար ազատ ժամեր չկան։",
+  completeEveryDetail: "Լրացրու բոլոր տվյալները՝ ամրագրումը հաստատելու համար։",
+  alreadyBooked: "Այս ժամը արդեն զբաղված է։ Ընտրիր ուրիշ ժամ։",
+  error: "Ինչ-որ բան սխալ գնաց։ Փորձիր նորից։",
+  successEyebrow: "Այցը հաստատված է",
+  successTitle: "Քո այցը ամրագրված է։",
+  sent: "Telegram հաստատումն ուղարկվել է։",
+  close: "Փակել",
+  with: "մասնագետ՝",
+  on: "օր՝",
+  at: "ժամը"
+});
+
+Object.assign(translations.ru, {
+  privateAppointments: "Запись в лазерную студию",
+  heroTitle: "Запишитесь на лазерную эпиляцию.",
+  heroText: "Премиальная запись Heln для лазерной эпиляции, консультаций и профессионального обучения.",
+  todayMood: "Студия",
+  moodValue: "Elena Arayi Studio",
+  begin: "Записаться",
+  back: "Назад",
+  stepService: "Шаг 1 из 3",
+  stepSpecialist: "Шаг 2 из 3",
+  stepTime: "Шаг 3 из 3",
+  chooseService: "Выберите услугу",
+  chooseSpecialist: "Выберите специалиста",
+  selectTime: "Выберите дату и время",
+  service: "Услуга",
+  specialist: "Специалист",
+  date: "Дата",
+  availableTimes: "Свободное время",
+  name: "Ваше имя",
+  phone: "Телефон",
+  confirm: "Подтвердить запись",
+  reserving: "Записываем...",
+  checking: "Проверяем свободное время...",
+  booked: "занято",
+  noSlots: "На этот день нет свободного времени.",
+  completeEveryDetail: "Заполните все данные перед подтверждением.",
+  alreadyBooked: "Это время уже занято. Выберите другое.",
+  error: "Что-то пошло не так. Попробуйте еще раз.",
+  successEyebrow: "Запись подтверждена",
+  successTitle: "Ваш визит забронирован.",
+  sent: "Подтверждение отправлено в Telegram.",
+  close: "Закрыть",
+  with: "с",
+  on: "на",
+  at: "в"
+});
+
+Object.assign(localizedServices, {
+  "haircut-styling": {
+    en: {
+      name: "Women's laser hair removal",
+      description: "A careful laser hair removal visit with a personal plan."
+    },
+    hy: {
+      name: "Կանանց լազերային մազահեռացում",
+      description: "Նուրբ եւ անվտանգ լազերային մազահեռացում՝ անհատական մոտեցմամբ։"
+    },
+    ru: {
+      name: "Женская лазерная эпиляция",
+      description: "Деликатная лазерная эпиляция с индивидуальным подходом."
+    }
+  },
+  manicure: {
+    en: {
+      name: "Men's laser hair removal",
+      description: "Comfortable laser hair removal for men with a private approach."
+    },
+    hy: {
+      name: "Տղամարդկանց մազահեռացում",
+      description: "Լազերային մազահեռացում տղամարդկանց համար՝ հարմար եւ անհատական։"
+    },
+    ru: {
+      name: "Мужская лазерная эпиляция",
+      description: "Комфортная лазерная эпиляция для мужчин."
+    }
+  },
+  "facial-treatment": {
+    en: {
+      name: "Personal consultation",
+      description: "Choose the right package and schedule with a specialist."
+    },
+    hy: {
+      name: "Անհատական խորհրդատվություն",
+      description: "Ընտրիր ճիշտ փաթեթը եւ գրաֆիկը մասնագետի հետ։"
+    },
+    ru: {
+      name: "Индивидуальная консультация",
+      description: "Подберите подходящий пакет и график со специалистом."
+    }
+  },
+  "hair-coloring": {
+    en: {
+      name: "Training and certification",
+      description: "Professional training for beauty specialists."
+    },
+    hy: {
+      name: "Դասընթաց եւ սերտիֆիկացում",
+      description: "Մասնագիտական դասընթաց գեղեցկության ոլորտի մասնագետների համար։"
+    },
+    ru: {
+      name: "Обучение и сертификация",
+      description: "Профессиональное обучение для beauty-специалистов."
+    }
+  }
+});
+
+Object.assign(translations.en, {
+  minutesShort: "min.",
+  noSpecialist: "No active specialist is assigned to this service yet."
+});
+
+Object.assign(translations.hy, {
+  minutesShort: "րոպե",
+  noSpecialist: "Այս ծառայությանը դեռ ակտիվ մասնագետ կցված չէ։"
+});
+
+Object.assign(translations.ru, {
+  minutesShort: "мин.",
+  noSpecialist: "К этой услуге пока не назначен активный специалист."
+});
+
 let services = [
   {
     id: "haircut-styling",
@@ -451,7 +797,7 @@ submitButton.addEventListener("click", submitBooking);
 dateInput.addEventListener("input", enforceWorkingDate);
 
 function t(key) {
-  return translations[state.language][key] || translations.en[key] || key;
+  return translations[state.language]?.[key] || translations.en[key] || key;
 }
 
 function renderLanguageSwitch() {
@@ -489,8 +835,8 @@ function renderStaticText() {
     if (label) label.textContent = salonName;
   });
   document.querySelector("[data-i18n='privateAppointments']").textContent = t("privateAppointments");
-  document.querySelector("[data-i18n='heroTitle']").textContent = state.settings.heroTitle || t("heroTitle");
-  document.querySelector("[data-i18n='heroText']").textContent = state.settings.heroText || t("heroText");
+  document.querySelector("[data-i18n='heroTitle']").textContent = localizedHeroTitle();
+  document.querySelector("[data-i18n='heroText']").textContent = localizedHeroText();
   document.querySelector("[data-i18n='todayMood']").textContent = t("todayMood");
   document.querySelector("[data-i18n='moodValue']").textContent = branchName;
   document.querySelector("#startBooking").textContent = t("begin");
@@ -521,6 +867,20 @@ function applyBrandTheme() {
   document.documentElement.style.setProperty("--hero-image", `url("${sanitizeCssUrl(state.settings.heroImageUrl)}")`);
   telegram?.setHeaderColor?.(shadeColor(brandColor, 82));
   telegram?.setBackgroundColor?.(shadeColor(brandColor, 88));
+}
+
+function localizedHeroTitle() {
+  if (state.language === "hy" && state.settings.heroTitle) {
+    return state.settings.heroTitle;
+  }
+  return t("heroTitle");
+}
+
+function localizedHeroText() {
+  if (state.language === "hy" && state.settings.heroText) {
+    return state.settings.heroText;
+  }
+  return t("heroText");
 }
 
 function getBrandInitials(name) {
@@ -567,8 +927,8 @@ function renderCards() {
             service.imageUrl ? `style="background-image:url('${service.imageUrl.replaceAll("'", "%27")}')"` : ""
           }>${service.imageUrl ? "" : service.icon}</span>
           <span>
-            <h3>${service.name}</h3>
-            <p>${service.description} ${service.durationMinutes} min.</p>
+            <h3>${getServiceName(service)}</h3>
+            <p>${getServiceDescription(service.id)} ${service.durationMinutes} ${t("minutesShort")}</p>
           </span>
           <span class="card-arrow">&rsaquo;</span>
         </button>
@@ -591,7 +951,7 @@ function renderCards() {
       `
         )
         .join("")
-    : `<p class="availability-note">No active specialist is assigned to this service yet.</p>`;
+    : `<p class="availability-note">${t("noSpecialist")}</p>`;
 
   serviceCards.querySelectorAll("[data-service-id]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -629,7 +989,7 @@ function renderTimeSlots() {
 
   timeSlotContainer.innerHTML = state.slots
     .map((slot) => {
-      const label = slot.available ? `${slot.time}-${slot.endTime}` : `${slot.time} ${t("booked")}`;
+      const label = slot.available ? slot.time : `${slot.time} ${t("booked")}`;
 
       return `
         <button class="time-chip ${state.time === slot.time ? "selected" : ""} ${slot.available ? "" : "booked"}" data-time="${slot.time}" ${slot.available ? "" : "disabled"}>
@@ -684,7 +1044,7 @@ function renderStep() {
     bookingSummary.innerHTML = `
       <div>
         <small>${t("service")}</small>
-        <strong>${state.service.name}</strong>
+        <strong>${getServiceName(state.service)}</strong>
       </div>
       <div>
         <small>${t("specialist")}</small>
@@ -777,13 +1137,11 @@ async function loadCatalog() {
 }
 
 function getServiceDescription(id) {
-  const descriptions = {
-    "haircut-styling": "Լազերային մազահեռացում կանանց համար՝ նուրբ, անվտանգ եւ անհատական։",
-    manicure: "Լազերային մազահեռացում տղամարդկանց համար՝ անհատական մոտեցմամբ։",
-    "facial-treatment": "Անհատական խորհրդատվություն՝ ճիշտ փաթեթը ընտրելու համար։",
-    "hair-coloring": "Մասնագիտական դասընթաց եւ սերտիֆիկացում Heln մոտեցմամբ։"
-  };
-  return descriptions[id] || "Պրեմիում ծառայություն՝ անհատական մոտեցմամբ։";
+  return localizedServices[id]?.[state.language]?.description || localizedServices[id]?.en?.description || "Premium service with a personal approach.";
+}
+
+function getServiceName(service) {
+  return localizedServices[service.id]?.[state.language]?.name || service.name;
 }
 
 function getServiceIcon(id) {
@@ -907,8 +1265,13 @@ function showSuccess(booking) {
   bookingPanel.classList.add("hidden");
   successPanel.classList.remove("hidden");
 
+  const serviceName = getServiceName({
+    id: booking.serviceId || state.service?.id,
+    name: booking.serviceName
+  });
+
   document.querySelector("#successText").textContent =
-    `${booking.serviceName} with ${booking.specialistName} on ${formatDate(booking.date)} at ${booking.time}-${booking.endTime}. ${t("sent")}`;
+    `${serviceName} ${t("with")} ${booking.specialistName} ${t("on")} ${formatDate(booking.date)} ${t("at")} ${booking.time}. ${t("sent")}`;
 }
 
 function formatDate(value) {
