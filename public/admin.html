@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/style.css?v=admin-upload-1" />
+    <link rel="stylesheet" href="/style.css?v=admin-upload-2" />
   </head>
   <body>
     <main class="admin-shell">
@@ -91,9 +91,13 @@
             <span>Hero image URL</span>
             <input type="text" id="heroImageUrl" placeholder="https://images.unsplash.com/... կամ /uploads/image.jpg" />
           </label>
-          <label class="field compact-field wide-field">
+          <label class="upload-field wide-field">
             <span>Upload hero image from device</span>
             <input type="file" id="heroImageUpload" accept="image/*" />
+            <span class="upload-control">
+              <span class="upload-button">Ընտրել նկար</span>
+              <span class="upload-name">Նկար ընտրված չէ</span>
+            </span>
           </label>
           <label class="toggle-line">
             <input type="checkbox" id="depositRequired" />
@@ -254,9 +258,13 @@
             <span>Image URL</span>
             <input type="text" id="newServiceImageUrl" placeholder="https://images.unsplash.com/... կամ /uploads/image.jpg" />
           </label>
-          <label class="field compact-field wide-field">
+          <label class="upload-field wide-field">
             <span>Upload service image from device</span>
             <input type="file" id="newServiceImageUpload" accept="image/*" />
+            <span class="upload-control">
+              <span class="upload-button">Ընտրել նկար</span>
+              <span class="upload-name">Նկար ընտրված չէ</span>
+            </span>
           </label>
           <button class="admin-button primary" type="submit">Add service</button>
         </form>
@@ -347,6 +355,6 @@
       </form>
     </div>
 
-    <script src="/admin.js?v=admin-upload-1"></script>
+    <script src="/admin.js?v=admin-upload-2"></script>
   </body>
 </html>

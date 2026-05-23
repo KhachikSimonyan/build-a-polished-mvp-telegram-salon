@@ -110,8 +110,11 @@ const adminTranslations = {
     heroTitle: "Hero title",
     heroText: "Hero text",
     heroImageUrl: "Hero image URL",
+    imageUrl: "Image URL",
     uploadHeroImage: "Upload hero image from device",
     uploadServiceImage: "Upload service image from device",
+    chooseImage: "Choose image",
+    noImageChosen: "No image selected",
     requireDeposit: "Require deposit",
     depositAmount: "Deposit amount",
     reminderMessages: "Reminder messages",
@@ -342,8 +345,11 @@ const adminTranslations = {
 };
 
 Object.assign(adminTranslations.hy, {
-  uploadHeroImage: "Ներբեռնել գլխավոր նկարը սարքից",
-  uploadServiceImage: "Ներբեռնել ծառայության նկարը սարքից"
+  imageUrl: "Նկարի հղում",
+  uploadHeroImage: "Ընտրել գլխավոր նկարը սարքից",
+  uploadServiceImage: "Ընտրել ծառայության նկարը սարքից",
+  chooseImage: "Ընտրել նկար",
+  noImageChosen: "Նկար ընտրված չէ"
 });
 
 const accessPassword = new URLSearchParams(window.location.search).get("access");
@@ -705,6 +711,7 @@ function translateLabels() {
     "Hero title": "heroTitle",
     "Hero text": "heroText",
     "Hero image URL": "heroImageUrl",
+    "Image URL": "imageUrl",
     "Upload hero image from device": "uploadHeroImage",
     "Upload service image from device": "uploadServiceImage",
     "Deposit amount": "depositAmount",
@@ -725,11 +732,20 @@ function translateLabels() {
     Role: "role",
     "Choose specialist": "chooseSpecialist"
   };
-  document.querySelectorAll(".field span").forEach((label) => {
+  document.querySelectorAll(".field span, .upload-field > span:first-child").forEach((label) => {
     const key = label.dataset.i18nKey || label.textContent.trim();
     if (labels[key]) {
       label.dataset.i18nKey = key;
       label.textContent = tr(labels[key]);
+    }
+  });
+
+  document.querySelectorAll(".upload-button").forEach((item) => {
+    item.textContent = tr("chooseImage");
+  });
+  document.querySelectorAll(".upload-name").forEach((item) => {
+    if (!item.dataset.hasFile) {
+      item.textContent = tr("noImageChosen");
     }
   });
 
@@ -922,12 +938,16 @@ function renderServices() {
             <input type="text" maxlength="8" value="${escapeHtml(service.icon || "")}" data-service-icon />
           </label>
           <label class="field compact-field wide-field">
-            <span>Image URL</span>
+            <span>${tr("imageUrl")}</span>
             <input type="text" value="${escapeHtml(service.imageUrl || "")}" data-service-image-url />
           </label>
-          <label class="field compact-field wide-field">
+          <label class="upload-field wide-field">
             <span>${tr("uploadServiceImage")}</span>
             <input type="file" accept="image/*" data-service-image-upload />
+            <span class="upload-control">
+              <span class="upload-button">${tr("chooseImage")}</span>
+              <span class="upload-name">${tr("noImageChosen")}</span>
+            </span>
           </label>
           <div class="admin-actions">
             <button class="admin-button primary" data-save-service>${tr("save")}</button>
@@ -1679,6 +1699,7 @@ async function uploadImageIntoInput(fileInput, targetInput) {
     return;
   }
 
+  updateUploadLabel(fileInput, file.name);
   try {
     const formData = new FormData();
     formData.append("image", file);
@@ -1693,6 +1714,15 @@ async function uploadImageIntoInput(fileInput, targetInput) {
   } finally {
     fileInput.value = "";
   }
+}
+
+function updateUploadLabel(fileInput, name = "") {
+  const label = fileInput.closest(".upload-field")?.querySelector(".upload-name");
+  if (!label) {
+    return;
+  }
+  label.dataset.hasFile = name ? "true" : "";
+  label.textContent = name || tr("noImageChosen");
 }
 
 async function adminFetch(url, options = {}) {
