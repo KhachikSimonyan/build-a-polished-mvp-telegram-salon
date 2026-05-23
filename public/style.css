@@ -33,6 +33,24 @@ body {
     linear-gradient(145deg, var(--page-start) 0%, var(--page-mid) 48%, var(--page-end) 100%);
 }
 
+body.admin-page {
+  --rose-900: #062515;
+  --rose-700: #174b31;
+  --rose-500: #0b5a34;
+  --rose-300: #b8d8c1;
+  --rose-100: #eef8ed;
+  --page-start: #f8fbf3;
+  --page-mid: #f4f6ea;
+  --page-end: #e7f0d1;
+  --champagne: #d8b64c;
+  --ink: #101812;
+  --muted: #687467;
+  --shadow: 0 18px 44px rgba(6, 37, 21, 0.12);
+  background:
+    radial-gradient(circle at top left, rgba(6, 37, 21, 0.28), transparent 32%),
+    linear-gradient(145deg, var(--page-start) 0%, var(--page-mid) 52%, var(--page-end) 100%);
+}
+
 button,
 input,
 select {
@@ -526,6 +544,12 @@ select {
   outline: none;
 }
 
+.admin-page input,
+.admin-page select {
+  border-color: rgba(216, 182, 76, 0.34);
+  background: rgba(255, 255, 255, 0.92);
+}
+
 input[type="file"] {
   cursor: pointer;
 }
@@ -586,6 +610,12 @@ input[type="file"] {
 input:focus {
   border-color: var(--rose-500);
   box-shadow: 0 0 0 4px rgba(183, 110, 121, 0.12);
+}
+
+.admin-page input:focus,
+.admin-page select:focus {
+  border-color: var(--champagne);
+  box-shadow: 0 0 0 4px rgba(216, 182, 76, 0.16);
 }
 
 select {
@@ -748,9 +778,9 @@ select {
 
 .admin-login,
 .admin-dashboard {
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
   box-shadow: var(--shadow);
   padding: 16px;
 }
@@ -794,15 +824,15 @@ select {
 
 .admin-fold-section {
   overflow: hidden;
-  border: 1px solid rgba(232, 184, 189, 0.55);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.66);
-  box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 14px 32px rgba(6, 37, 21, 0.07);
 }
 
 .admin-fold-section.is-open {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 248, 244, 0.66));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 251, 243, 0.76));
 }
 
 .admin-fold-header {
@@ -887,9 +917,9 @@ select {
 
 .admin-management-grid {
   padding: 12px;
-  border: 1px solid rgba(232, 184, 189, 0.55);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .admin-management-grid .admin-button,
@@ -919,10 +949,10 @@ select {
 .insight-card,
 .calendar-column,
 .compact-item {
-  border: 1px solid rgba(232, 184, 189, 0.55);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.76);
-  box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 14px 32px rgba(6, 37, 21, 0.07);
 }
 
 .insight-card,
@@ -986,10 +1016,10 @@ select {
 .stat-card,
 .booking-card,
 .staff-card {
-  border: 1px solid rgba(232, 184, 189, 0.55);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.76);
-  box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 14px 32px rgba(6, 37, 21, 0.07);
   min-width: 0;
 }
 
@@ -1036,11 +1066,11 @@ select {
 .filter-chip,
 .admin-button {
   min-height: 36px;
-  border: 1px solid rgba(232, 184, 189, 0.65);
+  border: 1px solid rgba(216, 182, 76, 0.32);
   border-radius: 999px;
   padding: 0 12px;
   color: var(--rose-900);
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.86);
   font-weight: 800;
   max-width: 100%;
   white-space: normal;
@@ -1097,9 +1127,9 @@ select {
   gap: 10px;
   margin-bottom: 12px;
   padding: 12px;
-  border: 1px solid rgba(232, 184, 189, 0.55);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .staff-create .service-checks,
@@ -1119,10 +1149,10 @@ select {
   grid-template-columns: minmax(0, 1fr) 150px 96px;
   gap: 10px;
   padding: 12px;
-  border: 1px solid rgba(232, 184, 189, 0.55);
+  border: 1px solid rgba(216, 182, 76, 0.22);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.76);
-  box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 14px 32px rgba(6, 37, 21, 0.07);
   min-width: 0;
 }
 
