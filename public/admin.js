@@ -345,11 +345,51 @@ const adminTranslations = {
 };
 
 Object.assign(adminTranslations.hy, {
+  headerTitle: "Ադմին վահանակ",
+  headerText: "Պարզ վահանակ՝ այցերը, հաճախորդներին, ծառայությունները և աշխատանքային ժամերը կառավարելու համար։",
+  ownerAccess: "Մուտք ադմին",
+  salonProfile: "Սրահի տվյալներ",
+  salonProfileNote: "Փոխիր անունը, գույները, նկարները և հիշեցումները։",
+  googleSheetSync: "Google Sheet",
+  analytics: "Վիճակագրություն",
+  calendarView: "Օրացույց",
+  manualBooking: "Ձեռքով ամրագրում",
+  manualBookingNote: "Օգտագործիր հեռախոսով կամ Instagram-ով ստացած այցերի համար։",
+  availabilityExceptions: "Հատուկ օրեր",
+  availabilityExceptionsNote: "Նշիր հանգստյան օր կամ այդ օրվա այլ ժամեր։",
+  clientNotes: "Հաճախորդի նշումներ",
+  clientNotesNote: "Ներքին նշումներ կրկնվող հաճախորդների համար։",
+  reminderPreview: "Հիշեցումներ",
+  serviceCategories: "Ծառայություններ",
+  serviceCategoriesNote: "Ավելացրու կամ փոխիր ծառայության անունը, տևողությունը և նկարը։",
+  staffSchedules: "Մասնագետներ և ժամեր",
+  staffNote: "Ընտրիր բաժինը, հետո փոխիր մասնագետի ժամերը քարտի մեջ։",
+  bookings: "Այցեր",
   imageUrl: "Նկարի հղում",
   uploadHeroImage: "Ընտրել գլխավոր նկարը սարքից",
   uploadServiceImage: "Ընտրել ծառայության նկարը սարքից",
   chooseImage: "Ընտրել նկար",
   noImageChosen: "Նկար ընտրված չէ"
+});
+
+Object.assign(adminTranslations.en, {
+  headerTitle: "Admin panel",
+  headerText: "Simple controls for appointments, clients, services, staff hours, and salon settings.",
+  ownerAccess: "Admin login",
+  salonProfile: "Salon details",
+  salonProfileNote: "Change the name, colors, images, deposit, and reminders.",
+  googleSheetSync: "Google Sheet",
+  calendarView: "Calendar",
+  manualBookingNote: "Add visits received by phone or Instagram.",
+  availabilityExceptions: "Special days",
+  availabilityExceptionsNote: "Mark a day off or set custom hours for one day.",
+  clientNotesNote: "Internal notes for repeat clients.",
+  reminderPreview: "Reminders",
+  serviceCategories: "Services",
+  serviceCategoriesNote: "Add or edit service names, duration, and images.",
+  staffSchedules: "Staff and hours",
+  staffNote: "Open a service, then edit specialist hours inside the card.",
+  bookings: "Appointments"
 });
 
 const accessPassword = new URLSearchParams(window.location.search).get("access");
@@ -656,6 +696,7 @@ function applyAdminLanguage() {
 
   const sections = [
     ["Salon profile", "salonProfile"],
+    ["Salon details", "salonProfile"],
     ["Google Sheet sync", "googleSheetSync"],
     ["Analytics", "analytics"],
     ["Calendar view", "calendarView"],
@@ -677,6 +718,7 @@ function applyAdminLanguage() {
 
   setMutedText("Brand, branch, deposit and reminder settings.", "salonProfileNote");
   setMutedText("Change the client demo name, colors, cover image, deposit and reminder settings.", "salonProfileNote");
+  setMutedText("Change the name, colors, images, deposit, and reminders.", "salonProfileNote");
   setMutedText("Use Google Sheet for services, specialists, weekly hours, exceptions, and manual bookings.", "googleSheetHelp");
   setMutedText("Use this for phone or Instagram bookings.", "manualBookingNote");
   setMutedText("Special vacation days or one-day custom hours.", "availabilityExceptionsNote");

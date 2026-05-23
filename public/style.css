@@ -717,37 +717,42 @@ select {
 }
 
 .admin-shell {
-  width: min(100%, 1120px);
+  width: min(100%, 1040px);
   margin: 0 auto;
-  padding: 28px 18px 48px;
+  padding: 18px 14px 36px;
   overflow-x: hidden;
 }
 
 .admin-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 22px;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
 .admin-header h1 {
-  font-size: clamp(44px, 8vw, 78px);
+  margin-top: 8px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.08;
+  font-weight: 900;
 }
 
 .admin-header p {
-  max-width: 520px;
+  max-width: 620px;
   color: var(--rose-700);
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .admin-login,
 .admin-dashboard {
   border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 28px;
+  border-radius: 22px;
   background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
-  padding: 22px;
+  padding: 16px;
 }
 
 .admin-login {
@@ -756,10 +761,12 @@ select {
 
 .admin-login h2,
 .admin-section-title {
-  margin: 0 0 14px;
+  margin: 0 0 8px;
   color: var(--rose-900);
-  font-family: "Cormorant Garamond", serif;
-  font-size: 34px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.08;
 }
 
 .admin-actions {
@@ -771,7 +778,7 @@ select {
 
 .admin-dashboard {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .admin-dashboard.hidden {
@@ -781,14 +788,14 @@ select {
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .admin-fold-section {
   overflow: hidden;
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 24px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.66);
   box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
 }
@@ -800,13 +807,13 @@ select {
 
 .admin-fold-header {
   width: 100%;
-  min-height: 74px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   border: 0;
-  padding: 18px 20px;
+  padding: 12px 14px;
   color: var(--rose-900);
   background: transparent;
   text-align: left;
@@ -821,15 +828,15 @@ select {
 
 .admin-fold-header .admin-section-title {
   margin: 0;
-  font-size: 32px;
-  line-height: 1;
+  font-size: 24px;
+  line-height: 1.06;
   overflow-wrap: anywhere;
 }
 
 .admin-fold-chevron {
   position: relative;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
@@ -856,7 +863,7 @@ select {
 }
 
 .admin-fold-content {
-  padding: 0 18px 18px;
+  padding: 0 12px 12px;
   min-width: 0;
 }
 
@@ -873,15 +880,15 @@ select {
 .calendar-board {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 16px;
   min-width: 0;
 }
 
 .admin-management-grid {
-  padding: 16px;
+  padding: 12px;
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 22px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.7);
 }
 
@@ -891,7 +898,7 @@ select {
 }
 
 .toggle-line {
-  min-height: 52px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -913,14 +920,14 @@ select {
 .calendar-column,
 .compact-item {
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 22px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
 }
 
 .insight-card,
 .calendar-column {
-  padding: 16px;
+  padding: 12px;
 }
 
 .insight-card h3,
@@ -966,12 +973,12 @@ select {
 
 .compact-list {
   display: grid;
-  gap: 10px;
-  margin-bottom: 28px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .compact-item {
-  padding: 12px;
+  padding: 10px;
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -980,14 +987,14 @@ select {
 .booking-card,
 .staff-card {
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 22px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
   min-width: 0;
 }
 
 .stat-card {
-  padding: 16px;
+  padding: 12px;
 }
 
 .stat-card span {
@@ -1000,9 +1007,9 @@ select {
 
 .stat-card strong {
   display: block;
-  margin-top: 8px;
+  margin-top: 4px;
   color: var(--rose-900);
-  font-size: 32px;
+  font-size: 24px;
 }
 
 .admin-toolbar {
@@ -1010,8 +1017,8 @@ select {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .admin-filters {
@@ -1028,10 +1035,10 @@ select {
 
 .filter-chip,
 .admin-button {
-  min-height: 40px;
+  min-height: 36px;
   border: 1px solid rgba(232, 184, 189, 0.65);
   border-radius: 999px;
-  padding: 0 14px;
+  padding: 0 12px;
   color: var(--rose-900);
   background: rgba(255, 255, 255, 0.78);
   font-weight: 800;
@@ -1073,25 +1080,25 @@ select {
 
 .booking-list {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
 .staff-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .staff-create {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 16px;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 12px;
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 22px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.7);
 }
 
@@ -1103,17 +1110,17 @@ select {
 .service-admin-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .service-admin-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 150px 96px;
-  gap: 12px;
-  padding: 16px;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 22px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
   min-width: 0;
@@ -1132,13 +1139,13 @@ select {
 }
 
 .section-note {
-  margin: -8px 0 16px;
+  margin: -4px 0 10px;
 }
 
 .service-section {
   border: 1px solid rgba(232, 184, 189, 0.55);
-  border-radius: 26px;
-  padding: 16px;
+  border-radius: 18px;
+  padding: 12px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 248, 244, 0.7));
   box-shadow: 0 16px 38px rgba(122, 70, 77, 0.08);
 }
@@ -1147,9 +1154,9 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 14px;
-  padding-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(232, 184, 189, 0.38);
 }
 
@@ -1157,7 +1164,7 @@ select {
   margin: 2px 0 5px;
   color: var(--rose-900);
   font-family: "Cormorant Garamond", serif;
-  font-size: 34px;
+  font-size: 24px;
   line-height: 1;
 }
 
@@ -1168,8 +1175,8 @@ select {
 }
 
 .service-section-head strong {
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -1181,14 +1188,14 @@ select {
 .service-specialists {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
 .staff-card {
   display: grid;
-  gap: 14px;
-  padding: 16px;
+  gap: 10px;
+  padding: 12px;
 }
 
 .staff-card-head {
@@ -1294,30 +1301,31 @@ select {
 .booking-card {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 16px;
-  padding: 16px;
+  gap: 10px;
+  padding: 12px;
 }
 
 .booking-card h3 {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: var(--rose-900);
+  font-size: 16px;
 }
 
 .booking-card p {
   margin: 0;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.4;
 }
 
 .status-badge {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  min-height: 28px;
-  margin-bottom: 10px;
+  min-height: 24px;
+  margin-bottom: 8px;
   border-radius: 999px;
   padding: 0 10px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -1579,7 +1587,7 @@ body[data-language="hy"] .time-chip {
 }
 
 body[data-admin-language="hy"] .admin-section-title {
-  font-size: 28px;
+  font-size: 21px;
   line-height: 1.12;
 }
 
@@ -1593,7 +1601,7 @@ body[data-admin-language="hy"] .compact-item span {
 }
 
 body[data-admin-language="hy"] .admin-header h1 {
-  font-size: clamp(38px, 7vw, 62px);
+  font-size: clamp(22px, 5.5vw, 32px);
 }
 
 body[data-admin-language="hy"] .admin-header p {
@@ -1614,12 +1622,12 @@ body[data-admin-language="hy"] .admin-header p {
 
 @media (max-width: 760px) {
   .admin-shell {
-    padding: 16px 10px 32px;
+    padding: 12px 8px 28px;
   }
 
   .admin-login,
   .admin-dashboard {
-    border-radius: 22px;
+    border-radius: 18px;
     padding: 12px;
   }
 
@@ -1630,17 +1638,17 @@ body[data-admin-language="hy"] .admin-header p {
   }
 
   .admin-fold-header {
-    min-height: 64px;
-    padding: 14px 14px;
+    min-height: 52px;
+    padding: 10px 12px;
   }
 
   .admin-fold-header .admin-section-title {
-    font-size: 27px;
+    font-size: 22px;
   }
 
   .admin-fold-chevron {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
   }
 
   .admin-fold-content {
