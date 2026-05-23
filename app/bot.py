@@ -17,6 +17,10 @@ def admin_url() -> str:
     return f"{settings.base_url}/admin?access={settings.admin_password}"
 
 
+def salon_photo_url() -> str:
+    return f"{settings.base_url.rstrip('/')}/uploads/heln-logo-watermark.jpg"
+
+
 def mini_app_markup(chat_id: int | str | None = None) -> InlineKeyboardMarkup:
     if not settings.is_public_https_base_url:
         return InlineKeyboardMarkup(
@@ -46,11 +50,24 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     pool = context.application.bot_data["pool"]
     salon = await get_salon_settings(pool)
     salon_name = salon.get("salonName") or "Heln"
-    await update.message.reply_text(
+    message = (
         f"Բարի գալուստ, {first_name}։\n\n"
-        f"Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ և հարմար։",
-        reply_markup=mini_app_markup(chat_id),
+        f"Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ և հարմար։"
     )
+    markup = mini_app_markup(chat_id)
+
+    if settings.is_public_https_base_url:
+        try:
+            await update.message.reply_photo(
+                photo=salon_photo_url(),
+                caption=message,
+                reply_markup=markup,
+            )
+            return
+        except Exception:
+            pass
+
+    await update.message.reply_text(message, reply_markup=markup)
 
 
 async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
