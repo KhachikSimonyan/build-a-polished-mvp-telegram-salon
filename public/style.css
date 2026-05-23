@@ -83,12 +83,12 @@ button {
 .hero::before {
   content: "";
   position: absolute;
-  width: 268px;
-  height: 268px;
-  top: 94px;
-  left: 50%;
+  width: 252px;
+  height: 252px;
+  top: 96px;
+  left: auto;
+  right: -18px;
   border-radius: 50%;
-  transform: translateX(-50%);
   background: url("/uploads/heln-logo-watermark.jpg") center / cover no-repeat;
   opacity: 0.18;
   mix-blend-mode: multiply;
@@ -1454,6 +1454,12 @@ body[data-language="hy"] h1 {
   line-height: 1.02;
 }
 
+body[data-language="ru"] h1 {
+  font-size: clamp(38px, 11vw, 50px);
+  line-height: 1.04;
+  overflow-wrap: anywhere;
+}
+
 body[data-language="hy"] .topbar h2,
 body[data-language="hy"] .success-panel h2 {
   font-size: 31px;
@@ -1503,11 +1509,11 @@ body[data-language="hy"] .hero-footer-note {
   }
 
   .hero::before {
-    width: 238px;
-    height: 238px;
+    width: 230px;
+    height: 230px;
     top: 104px;
-    right: auto;
-    left: 50%;
+    right: -32px;
+    left: auto;
   }
 
   .brand-mark {
