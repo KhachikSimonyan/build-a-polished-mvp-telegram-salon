@@ -314,8 +314,18 @@ Object.assign(translations.ru, {
 
 Object.assign(translations.en, {
   privateAppointments: "Private laser studio appointments",
-  heroTitle: "Book your laser hair removal visit.",
-  heroText: "A premium Heln booking experience for laser hair removal, consultations, and professional training.",
+  salesBadge: "Booking without a call",
+  heroTitle: "Book a time that fits you in a few easy steps.",
+  heroText: "Choose a service, specialist, and free time. Your confirmation arrives directly in Telegram.",
+  heroSalesLineOne: "Choose a service, specialist, and free time.",
+  heroSalesLineTwo: "Your confirmation arrives directly in Telegram.",
+  heroStepOneLabel: "Step 1",
+  heroStepOne: "Service",
+  heroStepTwoLabel: "Step 2",
+  heroStepTwo: "Specialist",
+  heroStepThreeLabel: "Step 3",
+  heroStepThree: "Time",
+  heroFooterNote: "Fast, easy, and without waiting",
   todayMood: "Studio",
   moodValue: "Elena Arayi Studio",
   begin: "Book now",
@@ -348,8 +358,18 @@ Object.assign(translations.en, {
 
 Object.assign(translations.hy, {
   privateAppointments: "Լազերային ստուդիայի ամրագրումներ",
-  heroTitle: "Ամրագրիր քո լազերային մազահեռացման այցը",
-  heroText: "Պրեմիում, անհատական եւ անվտանգ մոտեցում՝ Heln գեղեցկության ստուդիայում։",
+  salesBadge: "Ամրագրում առանց զանգի",
+  heroTitle: "Գրանցվիր հարմար ժամին մի քանի քայլով",
+  heroText: "Ընտրիր ծառայությունը, մասնագետին եւ ազատ ժամը։ Հաստատումը կստանաս անմիջապես Telegram-ում։",
+  heroSalesLineOne: "Ընտրիր ծառայությունը, մասնագետին եւ ազատ ժամը։",
+  heroSalesLineTwo: "Հաստատումը կստանաս անմիջապես Telegram-ում։",
+  heroStepOneLabel: "Քայլ 1",
+  heroStepOne: "Ծառայություն",
+  heroStepTwoLabel: "Քայլ 2",
+  heroStepTwo: "Մասնագետ",
+  heroStepThreeLabel: "Քայլ 3",
+  heroStepThree: "Ժամ",
+  heroFooterNote: "Արագ, հարմար եւ առանց սպասելու",
   todayMood: "Ստուդիա",
   moodValue: "Elena Arayi Studio",
   begin: "Ամրագրել",
@@ -382,8 +402,18 @@ Object.assign(translations.hy, {
 
 Object.assign(translations.ru, {
   privateAppointments: "Запись в лазерную студию",
-  heroTitle: "Запишитесь на лазерную эпиляцию.",
-  heroText: "Премиальная запись Heln для лазерной эпиляции, консультаций и профессионального обучения.",
+  salesBadge: "Запись без звонка",
+  heroTitle: "Запишитесь в удобное время за несколько шагов.",
+  heroText: "Выберите услугу, специалиста и свободное время. Подтверждение придет прямо в Telegram.",
+  heroSalesLineOne: "Выберите услугу, специалиста и свободное время.",
+  heroSalesLineTwo: "Подтверждение придет прямо в Telegram.",
+  heroStepOneLabel: "Шаг 1",
+  heroStepOne: "Услуга",
+  heroStepTwoLabel: "Шаг 2",
+  heroStepTwo: "Специалист",
+  heroStepThreeLabel: "Шаг 3",
+  heroStepThree: "Время",
+  heroFooterNote: "Быстро, удобно и без ожидания",
   todayMood: "Студия",
   moodValue: "Elena Arayi Studio",
   begin: "Записаться",
@@ -661,6 +691,57 @@ const localizedSpecialists = {
 };
 
 Object.assign(translations.en, {
+  privateAppointments: "Laser studio appointments",
+  salesBadge: "Booking without a call",
+  heroTitle: "Book a time that fits you in a few easy steps.",
+  heroText: "Choose a service, specialist, and free time. Your confirmation arrives directly in Telegram.",
+  heroSalesLineOne: "Choose a service, specialist, and free time.",
+  heroSalesLineTwo: "Your confirmation arrives directly in Telegram.",
+  heroStepOneLabel: "Step 1",
+  heroStepOne: "Service",
+  heroStepTwoLabel: "Step 2",
+  heroStepTwo: "Specialist",
+  heroStepThreeLabel: "Step 3",
+  heroStepThree: "Time",
+  heroFooterNote: "Fast, easy, and without waiting",
+  begin: "Book now"
+});
+
+Object.assign(translations.hy, {
+  privateAppointments: "Լազերային ստուդիայի ամրագրումներ",
+  salesBadge: "Ամրագրում առանց զանգի",
+  heroTitle: "Գրանցվիր հարմար ժամին մի քանի քայլով",
+  heroText: "Ընտրիր ծառայությունը, մասնագետին եւ ազատ ժամը։ Հաստատումը կստանաս անմիջապես Telegram-ում։",
+  heroSalesLineOne: "Ընտրիր ծառայությունը, մասնագետին եւ ազատ ժամը։",
+  heroSalesLineTwo: "Հաստատումը կստանաս անմիջապես Telegram-ում։",
+  heroStepOneLabel: "Քայլ 1",
+  heroStepOne: "Ծառայություն",
+  heroStepTwoLabel: "Քայլ 2",
+  heroStepTwo: "Մասնագետ",
+  heroStepThreeLabel: "Քայլ 3",
+  heroStepThree: "Ժամ",
+  heroFooterNote: "Արագ, հարմար եւ առանց սպասելու",
+  begin: "Ամրագրել"
+});
+
+Object.assign(translations.ru, {
+  privateAppointments: "Запись в лазерную студию",
+  salesBadge: "Запись без звонка",
+  heroTitle: "Запишитесь в удобное время за несколько шагов.",
+  heroText: "Выберите услугу, специалиста и свободное время. Подтверждение придет прямо в Telegram.",
+  heroSalesLineOne: "Выберите услугу, специалиста и свободное время.",
+  heroSalesLineTwo: "Подтверждение придет прямо в Telegram.",
+  heroStepOneLabel: "Шаг 1",
+  heroStepOne: "Услуга",
+  heroStepTwoLabel: "Шаг 2",
+  heroStepTwo: "Специалист",
+  heroStepThreeLabel: "Шаг 3",
+  heroStepThree: "Время",
+  heroFooterNote: "Быстро, удобно и без ожидания",
+  begin: "Записаться"
+});
+
+Object.assign(translations.en, {
   minutesShort: "min.",
   noSpecialist: "No active specialist is assigned to this service yet."
 });
@@ -747,7 +828,7 @@ const state = {
   slots: [],
   availabilityLoading: false,
   settings: {
-    salonName: "Heln",
+    salonName: "ELENA_ARAYI",
     branchName: "Elena Arayi Studio",
     brandColor: "#064127",
     accentColor: "#d7b84f",
@@ -842,21 +923,35 @@ function renderLanguageSwitch() {
 function renderStaticText() {
   const salonName = state.settings.salonName || "Maison Rose";
   const branchName = state.settings.branchName || t("moodValue");
+  const setText = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  };
   document.documentElement.lang = state.language === "hy" ? "hy" : state.language;
   document.body.dataset.language = state.language;
   document.title = `${salonName} Booking`;
   document.querySelectorAll(".brand-row").forEach((row) => {
     const mark = row.querySelector(".brand-mark");
     const label = row.querySelector("span:not(.brand-mark)");
-    if (mark) mark.textContent = getBrandInitials(salonName);
+    if (mark) mark.textContent = "Heln";
     if (label) label.textContent = salonName;
   });
-  document.querySelector("[data-i18n='privateAppointments']").textContent = t("privateAppointments");
-  document.querySelector("[data-i18n='heroTitle']").textContent = localizedHeroTitle();
-  document.querySelector("[data-i18n='heroText']").textContent = localizedHeroText();
-  document.querySelector("[data-i18n='todayMood']").textContent = t("todayMood");
-  document.querySelector("[data-i18n='moodValue']").textContent = branchName;
-  document.querySelector("#startBooking").textContent = t("begin");
+  setText("[data-i18n='salesBadge']", t("salesBadge"));
+  setText("[data-i18n='privateAppointments']", t("privateAppointments"));
+  setText("[data-i18n='heroTitle']", localizedHeroTitle());
+  setText("[data-i18n='heroText']", localizedHeroText());
+  setText("[data-i18n='heroSalesLineOne']", t("heroSalesLineOne"));
+  setText("[data-i18n='heroSalesLineTwo']", t("heroSalesLineTwo"));
+  setText("[data-i18n='heroStepOneLabel']", t("heroStepOneLabel"));
+  setText("[data-i18n='heroStepOne']", t("heroStepOne"));
+  setText("[data-i18n='heroStepTwoLabel']", t("heroStepTwoLabel"));
+  setText("[data-i18n='heroStepTwo']", t("heroStepTwo"));
+  setText("[data-i18n='heroStepThreeLabel']", t("heroStepThreeLabel"));
+  setText("[data-i18n='heroStepThree']", t("heroStepThree"));
+  setText("[data-i18n='heroFooterNote']", t("heroFooterNote"));
+  setText("[data-i18n='todayMood']", t("todayMood"));
+  setText("[data-i18n='moodValue']", branchName);
+  setText("#startBooking", t("begin"));
   document.querySelector("#backButton").setAttribute("aria-label", t("back"));
   document.querySelector("[data-i18n='date']").textContent = t("date");
   document.querySelector("[data-i18n='availableTimes']").textContent = t("availableTimes");
@@ -887,17 +982,28 @@ function applyBrandTheme() {
 }
 
 function localizedHeroTitle() {
-  if (state.language === "hy" && state.settings.heroTitle) {
+  if (state.language === "hy" && state.settings.heroTitle && !isOldDefaultHeroCopy(state.settings.heroTitle)) {
     return state.settings.heroTitle;
   }
   return t("heroTitle");
 }
 
 function localizedHeroText() {
-  if (state.language === "hy" && state.settings.heroText) {
+  if (state.language === "hy" && state.settings.heroText && !isOldDefaultHeroCopy(state.settings.heroText)) {
     return state.settings.heroText;
   }
   return t("heroText");
+}
+
+function isOldDefaultHeroCopy(value) {
+  const text = String(value || "").toLowerCase();
+  return (
+    text.includes("լազերային") ||
+    text.includes("մազահեռացման") ||
+    text.includes("պրեմիում") ||
+    text.includes("Õ¬Õ¡Õ¦") ||
+    text.includes("ÕºÖ€Õ¥Õ´")
+  );
 }
 
 function getBrandInitials(name) {

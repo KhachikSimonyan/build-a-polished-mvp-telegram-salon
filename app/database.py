@@ -249,7 +249,7 @@ async def init_db(pool: asyncpg.Pool) -> None:
         await conn.execute(
             """
             UPDATE salon_settings
-            SET salon_name = 'Heln',
+            SET salon_name = 'ELENA_ARAYI',
                 branch_name = 'Elena Arayi Studio',
                 brand_color = '#064127',
                 accent_color = '#d7b84f',
@@ -259,7 +259,7 @@ async def init_db(pool: asyncpg.Pool) -> None:
                 instagram = '@elena_arayi',
                 address = 'Yerevan, Armenia'
             WHERE id = 1
-              AND salon_name = 'Maison Rose'
+              AND salon_name IN ('Maison Rose', 'Heln')
             """
         )
 
