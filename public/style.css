@@ -83,34 +83,20 @@ button {
 .hero::before {
   content: "";
   position: absolute;
-  width: 236px;
-  height: 236px;
-  top: 112px;
+  width: 268px;
+  height: 268px;
+  top: 94px;
   left: 50%;
   border-radius: 50%;
   transform: translateX(-50%);
-  background:
-    radial-gradient(circle, rgba(7, 56, 33, 0.24) 0 66%, transparent 67%),
-    radial-gradient(circle, transparent 0 69%, rgba(247, 229, 125, 0.82) 70% 71%, transparent 72%),
-    radial-gradient(circle, transparent 0 78%, rgba(232, 199, 86, 0.78) 79% 80%, transparent 81%),
-    radial-gradient(circle, transparent 0 88%, rgba(7, 56, 33, 0.28) 89% 100%);
+  background: url("/uploads/heln-logo-watermark.jpg") center / cover no-repeat;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
 .hero::after {
-  content: "Heln";
-  position: absolute;
-  left: 50%;
-  top: 222px;
-  color: var(--rose-900);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 98px;
-  font-style: italic;
-  font-weight: 700;
-  line-height: 1;
-  opacity: 0.18;
-  transform: translateX(-50%) rotate(-6deg);
-  pointer-events: none;
+  display: none;
 }
 
 .hero > * {
@@ -184,29 +170,19 @@ button {
 
 .brand-logo {
   position: relative;
-  color: var(--champagne);
-  background: #03180c;
+  color: transparent;
+  background: url("/uploads/heln-logo-watermark.jpg") center / cover no-repeat;
   border: 1px solid rgba(214, 175, 64, 0.92);
   text-decoration: underline;
   text-underline-offset: -2px;
   text-decoration-thickness: 1px;
   box-shadow: 0 10px 24px rgba(7, 56, 33, 0.16);
+  font-size: 0;
 }
 
 .brand-logo::before,
 .brand-logo::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border: 2px solid rgba(248, 229, 125, 0.86);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.brand-logo::after {
-  inset: 9px;
-  border-width: 1px;
-  border-color: rgba(214, 175, 64, 0.88);
+  display: none;
 }
 
 .eyebrow,
@@ -1527,9 +1503,9 @@ body[data-language="hy"] .hero-footer-note {
   }
 
   .hero::before {
-    width: 218px;
-    height: 218px;
-    top: 114px;
+    width: 238px;
+    height: 238px;
+    top: 104px;
     right: auto;
     left: 50%;
   }
