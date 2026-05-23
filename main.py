@@ -25,6 +25,7 @@ from app.database import (
     create_service,
     create_specialist,
     create_booking,
+    delete_bookings,
     delete_exception,
     delete_service,
     get_bookings,
@@ -196,6 +197,16 @@ async def admin_bookings(x_admin_password: str | None = Header(default=None)):
     require_admin(x_admin_password)
     bookings = await get_bookings(app.state.pool)
     return {"ok": True, "bookings": bookings, "stats": build_admin_stats(bookings)}
+
+
+@app.delete("/api/admin/bookings")
+async def admin_delete_bookings(x_admin_password: str | None = Header(default=None)):
+    require_admin(x_admin_password)
+    deleted = await delete_bookings(app.state.pool)
+    if settings.google_sync_enabled:
+        task = asyncio.create_task(app.state.google_sheets.export_bookings(app.state.pool))
+        task.add_done_callback(log_background_task_error)
+    return {"ok": True, "deleted": deleted, "bookings": [], "stats": build_admin_stats([])}
 
 
 @app.patch("/api/admin/bookings/{booking_id}/status")

@@ -6,6 +6,7 @@ const loginError = document.querySelector("#loginError");
 const bookingList = document.querySelector("#bookingList");
 const statsGrid = document.querySelector("#statsGrid");
 const filters = document.querySelector("#adminFilters");
+const clearBookingsButton = document.querySelector("#clearBookings");
 const staffSchedules = document.querySelector("#staffSchedules");
 const createSpecialistForm = document.querySelector("#createSpecialistForm");
 const newSpecialistService = document.querySelector("#newSpecialistService");
@@ -90,6 +91,7 @@ const adminTranslations = {
     creating: "Creating...",
     removing: "Removing...",
     deleting: "Deleting...",
+    clearing: "Clearing...",
     dashboardRefreshed: "Dashboard refreshed.",
     loggedOut: "Logged out.",
     headerTitle: "Salon daybook",
@@ -154,6 +156,9 @@ const adminTranslations = {
     removeSpecialist: "Remove specialist",
     staffNote: "Each service category has its own specialists. Change hours inside the category card.",
     bookings: "Bookings",
+    clearBookings: "Clear list",
+    clearBookingsConfirm: "Clear all bookings from this demo list?",
+    bookingsCleared: "Bookings list cleared.",
     all: "All",
     today: "Today",
     tomorrow: "Tomorrow",
@@ -231,6 +236,7 @@ const adminTranslations = {
     creating: "Ստեղծվում է...",
     removing: "Հեռացվում է...",
     deleting: "Ջնջվում է...",
+    clearing: "Մաքրվում է...",
     dashboardRefreshed: "Վահանակը թարմացվեց։",
     loggedOut: "Դուրս եկար admin-ից։",
     headerTitle: "Սրահի օրացույց",
@@ -286,6 +292,9 @@ const adminTranslations = {
     removeSpecialist: "Հեռացնել մասնագետ",
     staffNote: "Ամեն ծառայության բաժնի ներսում երևում են իր մասնագետները։ Ժամերը փոխիր քարտի ներսում։",
     bookings: "Ամրագրումներ",
+    clearBookings: "Մաքրել ցուցակը",
+    clearBookingsConfirm: "Մաքրե՞լ բոլոր այցերը demo ցուցակից։",
+    bookingsCleared: "Այցերի ցուցակը մաքրվեց։",
     all: "Բոլորը",
     today: "Այսօր",
     tomorrow: "Վաղը",
@@ -437,6 +446,11 @@ document.querySelector("#refreshBookings").addEventListener("click", async (even
     await loadBookings();
     showToast(tr("dashboardRefreshed"));
   });
+});
+
+clearBookingsButton.addEventListener("click", async (event) => {
+  if (!window.confirm(tr("clearBookingsConfirm"))) return;
+  await withButtonState(event.currentTarget, tr("clearing"), clearBookings);
 });
 
 document.querySelector("#logoutAdmin").addEventListener("click", () => {
@@ -687,6 +701,7 @@ function applyAdminLanguage() {
   setText(".admin-header h1", "headerTitle");
   setText(".admin-header p", "headerText");
   setText("#refreshBookings", "refresh");
+  setText("#clearBookings", "clearBookings");
   setText("#logoutAdmin", "logout");
   setText("#adminLogin h2", "ownerAccess");
   setText("#adminLogin .field span", "adminPassword");
@@ -879,6 +894,22 @@ async function loadBookings() {
     loginError.textContent = error.message;
     showToast(error.message, "error");
   }
+}
+
+async function clearBookings() {
+  const data = await adminFetch("/api/admin/bookings", {
+    method: "DELETE"
+  });
+  bookings = data.bookings || [];
+  activeFilter = "all";
+  filters.querySelectorAll(".filter-chip").forEach((chip) => {
+    chip.classList.toggle("active", chip.dataset.filter === activeFilter);
+  });
+  renderStats(data.stats || {});
+  renderBookings();
+  renderCalendar();
+  await loadAnalytics();
+  showToast(tr("bookingsCleared"));
 }
 
 async function loadGoogleSheetStatus() {

@@ -578,6 +578,13 @@ async def get_bookings(pool: asyncpg.Pool) -> list[dict[str, Any]]:
     return [booking_to_dict(row) for row in rows]
 
 
+async def delete_bookings(pool: asyncpg.Pool) -> int:
+    async with pool.acquire() as conn:
+        count = await conn.fetchval("SELECT COUNT(*) FROM bookings")
+        await conn.execute("DELETE FROM bookings")
+    return int(count or 0)
+
+
 async def get_booking(pool: asyncpg.Pool, booking_id: str) -> dict[str, Any]:
     try:
         parsed_id = uuid.UUID(booking_id)

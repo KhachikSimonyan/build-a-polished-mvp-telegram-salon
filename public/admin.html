@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/style.css?v=admin-colors-v1" />
+    <link rel="stylesheet" href="/style.css?v=admin-clear-bookings-v1" />
   </head>
   <body class="admin-page">
     <main class="admin-shell">
@@ -284,13 +284,16 @@
 
         <div class="admin-toolbar">
           <h2 class="admin-section-title">Bookings</h2>
-          <div class="admin-filters" id="adminFilters">
-            <button class="filter-chip active" data-filter="all">All</button>
-            <button class="filter-chip" data-filter="today">Today</button>
-            <button class="filter-chip" data-filter="tomorrow">Tomorrow</button>
-            <button class="filter-chip" data-filter="confirmed">Confirmed</button>
-            <button class="filter-chip" data-filter="cancelled">Cancelled</button>
-            <button class="filter-chip" data-filter="no_show">No-show</button>
+          <div class="admin-booking-tools">
+            <div class="admin-filters" id="adminFilters">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="today">Today</button>
+              <button class="filter-chip" data-filter="tomorrow">Tomorrow</button>
+              <button class="filter-chip" data-filter="confirmed">Confirmed</button>
+              <button class="filter-chip" data-filter="cancelled">Cancelled</button>
+              <button class="filter-chip" data-filter="no_show">No-show</button>
+            </div>
+            <button class="admin-button danger" type="button" id="clearBookings">Clear list</button>
           </div>
         </div>
 
@@ -355,6 +358,6 @@
       </form>
     </div>
 
-    <script src="/admin.js?v=admin-service-delete-v1"></script>
+    <script src="/admin.js?v=admin-clear-bookings-v1"></script>
   </body>
 </html>
