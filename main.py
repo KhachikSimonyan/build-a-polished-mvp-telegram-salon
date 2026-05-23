@@ -1,4 +1,5 @@
 import asyncio
+import importlib.util
 import logging
 import uuid
 from contextlib import asynccontextmanager
@@ -49,6 +50,7 @@ from app.telegram_auth import validate_telegram_init_data
 BASE_DIR = Path(__file__).resolve().parent
 PUBLIC_DIR = BASE_DIR / "public"
 UPLOAD_DIR = PUBLIC_DIR / "uploads"
+MULTIPART_AVAILABLE = importlib.util.find_spec("multipart") is not None
 logger = logging.getLogger(__name__)
 
 
@@ -376,32 +378,38 @@ async def admin_specialists(x_admin_password: str | None = Header(default=None))
     }
 
 
-@app.post("/api/admin/uploads")
-async def admin_upload_image(
-    image: UploadFile = File(...),
-    x_admin_password: str | None = Header(default=None),
-):
-    require_admin(x_admin_password)
-    if image.content_type not in {"image/jpeg", "image/png", "image/webp", "image/gif"}:
-        raise HTTPException(status_code=400, detail="Upload a JPG, PNG, WEBP, or GIF image.")
+if MULTIPART_AVAILABLE:
+    @app.post("/api/admin/uploads")
+    async def admin_upload_image(
+        image: UploadFile = File(...),
+        x_admin_password: str | None = Header(default=None),
+    ):
+        require_admin(x_admin_password)
+        if image.content_type not in {"image/jpeg", "image/png", "image/webp", "image/gif"}:
+            raise HTTPException(status_code=400, detail="Upload a JPG, PNG, WEBP, or GIF image.")
 
-    extension_by_type = {
-        "image/jpeg": ".jpg",
-        "image/png": ".png",
-        "image/webp": ".webp",
-        "image/gif": ".gif",
-    }
-    extension = extension_by_type[image.content_type]
-    contents = await image.read()
-    max_bytes = 5 * 1024 * 1024
-    if len(contents) > max_bytes:
-        raise HTTPException(status_code=400, detail="Image is too large. Maximum size is 5 MB.")
+        extension_by_type = {
+            "image/jpeg": ".jpg",
+            "image/png": ".png",
+            "image/webp": ".webp",
+            "image/gif": ".gif",
+        }
+        extension = extension_by_type[image.content_type]
+        contents = await image.read()
+        max_bytes = 5 * 1024 * 1024
+        if len(contents) > max_bytes:
+            raise HTTPException(status_code=400, detail="Image is too large. Maximum size is 5 MB.")
 
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    filename = f"{uuid.uuid4().hex}{extension}"
-    target = UPLOAD_DIR / filename
-    target.write_bytes(contents)
-    return {"ok": True, "url": f"/uploads/{filename}"}
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        filename = f"{uuid.uuid4().hex}{extension}"
+        target = UPLOAD_DIR / filename
+        target.write_bytes(contents)
+        return {"ok": True, "url": f"/uploads/{filename}"}
+else:
+    @app.post("/api/admin/uploads")
+    async def admin_upload_image_unavailable(x_admin_password: str | None = Header(default=None)):
+        require_admin(x_admin_password)
+        raise HTTPException(status_code=503, detail="Image uploads are temporarily unavailable.")
 
 
 @app.post("/api/admin/services")
