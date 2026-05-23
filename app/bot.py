@@ -20,23 +20,23 @@ def admin_url() -> str:
 def mini_app_markup(chat_id: int | str | None = None) -> InlineKeyboardMarkup:
     if not settings.is_public_https_base_url:
         return InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Mini App needs HTTPS", callback_data="mini_app_needs_https")]]
+            [[InlineKeyboardButton("Mini App-ին պետք է HTTPS", callback_data="mini_app_needs_https")]]
         )
 
-    keyboard = [[InlineKeyboardButton("Open booking experience", web_app=WebAppInfo(settings.base_url))]]
+    keyboard = [[InlineKeyboardButton("Ամրագրել այց", web_app=WebAppInfo(settings.base_url))]]
     if chat_id is not None and is_owner(chat_id):
-        keyboard.append([InlineKeyboardButton("Open admin dashboard", web_app=WebAppInfo(admin_url()))])
+        keyboard.append([InlineKeyboardButton("Բացել ադմին վահանակը", web_app=WebAppInfo(admin_url()))])
     return InlineKeyboardMarkup(keyboard)
 
 
 def admin_markup() -> InlineKeyboardMarkup:
     if not settings.is_public_https_base_url:
         return InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Admin needs HTTPS", callback_data="mini_app_needs_https")]]
+            [[InlineKeyboardButton("Admin-ին պետք է HTTPS", callback_data="mini_app_needs_https")]]
         )
 
     return InlineKeyboardMarkup(
-        [[InlineKeyboardButton("Open admin dashboard", web_app=WebAppInfo(admin_url()))]]
+        [[InlineKeyboardButton("Բացել ադմին վահանակը", web_app=WebAppInfo(admin_url()))]]
     )
 
 
@@ -47,7 +47,8 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     salon = await get_salon_settings(pool)
     salon_name = salon.get("salonName") or "Heln"
     await update.message.reply_text(
-        f"Բարի գալուստ, {first_name}։ Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ և հարմար։",
+        f"Բարի գալուստ, {first_name}։\n\n"
+        f"Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ և հարմար։",
         reply_markup=mini_app_markup(chat_id),
     )
 
@@ -59,7 +60,7 @@ async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         return
 
     await update.message.reply_text(
-        "Բացիր ադմին վահանակը՝ ամրագրումները, ծառայությունները և գույները կառավարելու համար։",
+        "Ադմին վահանակում կարող ես կառավարել այցերը, ծառայությունները, նկարները, գույները և աշխատանքային ժամերը։",
         reply_markup=admin_markup(),
     )
 

@@ -950,6 +950,17 @@ async def set_service_active(pool: asyncpg.Pool, service_id: str, active: bool) 
     return service_to_dict(row)
 
 
+async def delete_service(pool: asyncpg.Pool, service_id: str) -> None:
+    async with pool.acquire() as conn:
+        booking_count = await conn.fetchval("SELECT COUNT(*) FROM bookings WHERE service_id = $1", service_id)
+        if booking_count:
+            raise ValueError("This service already has bookings. Hide it instead to keep booking history.")
+
+        result = await conn.execute("DELETE FROM services WHERE id = $1", service_id)
+    if result == "DELETE 0":
+        raise ValueError("Service not found.")
+
+
 async def update_specialist_services(pool: asyncpg.Pool, specialist_id: str, service_ids: list[str]) -> dict[str, Any]:
     service_ids = normalize_service_ids(service_ids)
     if not service_ids:

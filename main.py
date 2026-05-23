@@ -26,6 +26,7 @@ from app.database import (
     create_specialist,
     create_booking,
     delete_exception,
+    delete_service,
     get_bookings,
     get_catalog,
     get_client_notes,
@@ -451,6 +452,16 @@ async def admin_service_active(
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
     return {"ok": True, "service": service}
+
+
+@app.delete("/api/admin/services/{service_id}")
+async def admin_delete_service(service_id: str, x_admin_password: str | None = Header(default=None)):
+    require_admin(x_admin_password)
+    try:
+        await delete_service(app.state.pool, service_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    return {"ok": True}
 
 
 @app.post("/api/admin/specialists")

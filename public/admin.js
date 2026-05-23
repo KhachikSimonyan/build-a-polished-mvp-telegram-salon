@@ -172,6 +172,11 @@ const adminTranslations = {
     hide: "Hide",
     restore: "Restore",
     delete: "Delete",
+    deleteService: "Delete completely",
+    deleteServiceConfirm: "Delete this service completely? Use Hide if it already has bookings.",
+    serviceDeleteHasBookings: "This service already has bookings. Use Hide to keep booking history.",
+    serviceDeleteNotFound: "Service not found.",
+    serviceDeleted: "Service deleted.",
     complete: "Complete",
     cancel: "Cancel",
     reschedule: "Reschedule",
@@ -299,6 +304,11 @@ const adminTranslations = {
     hide: "Թաքցնել",
     restore: "Վերականգնել",
     delete: "Ջնջել",
+    deleteService: "Ջնջել լրիվ",
+    deleteServiceConfirm: "Ջնջե՞լ ծառայությունը ամբողջությամբ։ Եթե կան այցեր, ավելի ճիշտ է սեղմել «Թաքցնել»։",
+    serviceDeleteHasBookings: "Այս ծառայությունն արդեն ունի այցեր։ Պատմությունը պահելու համար օգտագործիր «Թաքցնել»։",
+    serviceDeleteNotFound: "Ծառայությունը չի գտնվել։",
+    serviceDeleted: "Ծառայությունը ջնջվեց։",
     complete: "Ավարտել",
     cancel: "Չեղարկել",
     reschedule: "Փոխել ժամը",
@@ -994,6 +1004,7 @@ function renderServices() {
           <div class="admin-actions">
             <button class="admin-button primary" data-save-service>${tr("save")}</button>
             <button class="admin-button" data-toggle-service>${service.active ? tr("hide") : tr("restore")}</button>
+            <button class="admin-button danger" data-delete-service>${tr("deleteService")}</button>
           </div>
         </article>
       `
@@ -1013,6 +1024,16 @@ function renderServices() {
       const service = services.find((item) => item.id === card.dataset.serviceId);
       await withButtonState(button, service.active ? tr("removing") : tr("saving"), async () => {
         await setServiceActive(card.dataset.serviceId, !service.active);
+      });
+    });
+  });
+
+  serviceAdminList.querySelectorAll("[data-delete-service]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const card = button.closest("[data-service-id]");
+      if (!window.confirm(tr("deleteServiceConfirm"))) return;
+      await withButtonState(button, tr("deleting"), async () => {
+        await deleteService(card.dataset.serviceId);
       });
     });
   });
@@ -1251,6 +1272,33 @@ async function setServiceActive(id, active) {
   populateServiceSelect();
   populateRemoveSelect();
   showToast(active ? tr("serviceRestored") : tr("serviceHidden"));
+}
+
+async function deleteService(id) {
+  try {
+    await adminFetch(`/api/admin/services/${id}`, {
+      method: "DELETE"
+    });
+  } catch (error) {
+    const message = error.message || "";
+    if (message.includes("booking history")) {
+      throw new Error(tr("serviceDeleteHasBookings"));
+    }
+    if (message.includes("Service not found")) {
+      throw new Error(tr("serviceDeleteNotFound"));
+    }
+    throw error;
+  }
+  services = services.filter((service) => service.id !== id);
+  specialists = specialists.map((specialist) => ({
+    ...specialist,
+    serviceIds: (specialist.serviceIds || []).filter((serviceId) => serviceId !== id)
+  }));
+  renderServices();
+  renderSpecialists();
+  populateServiceSelect();
+  populateManualServices();
+  showToast(tr("serviceDeleted"));
 }
 
 async function createSpecialist() {
