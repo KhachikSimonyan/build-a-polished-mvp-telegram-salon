@@ -83,32 +83,33 @@ button {
 .hero::before {
   content: "";
   position: absolute;
-  width: 214px;
-  height: 214px;
-  top: 94px;
-  right: -12px;
+  width: 236px;
+  height: 236px;
+  top: 112px;
+  left: 50%;
   border-radius: 50%;
+  transform: translateX(-50%);
   background:
-    radial-gradient(circle, rgba(7, 56, 33, 0.2) 0 67%, transparent 68%),
-    radial-gradient(circle, transparent 0 69%, rgba(247, 229, 125, 0.55) 70% 71%, transparent 72%),
-    radial-gradient(circle, transparent 0 78%, rgba(232, 199, 86, 0.55) 79% 80%, transparent 81%),
-    radial-gradient(circle, transparent 0 88%, rgba(7, 56, 33, 0.18) 89% 100%);
+    radial-gradient(circle, rgba(7, 56, 33, 0.24) 0 66%, transparent 67%),
+    radial-gradient(circle, transparent 0 69%, rgba(247, 229, 125, 0.82) 70% 71%, transparent 72%),
+    radial-gradient(circle, transparent 0 78%, rgba(232, 199, 86, 0.78) 79% 80%, transparent 81%),
+    radial-gradient(circle, transparent 0 88%, rgba(7, 56, 33, 0.28) 89% 100%);
   pointer-events: none;
 }
 
 .hero::after {
   content: "Heln";
   position: absolute;
-  right: -56px;
-  top: 202px;
+  left: 50%;
+  top: 222px;
   color: var(--rose-900);
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 82px;
+  font-size: 98px;
   font-style: italic;
   font-weight: 700;
   line-height: 1;
-  opacity: 0.12;
-  transform: rotate(-6deg);
+  opacity: 0.18;
+  transform: translateX(-50%) rotate(-6deg);
   pointer-events: none;
 }
 
@@ -184,11 +185,12 @@ button {
 .brand-logo {
   position: relative;
   color: var(--champagne);
-  background: var(--rose-900);
-  border: 7px solid #f2dc86;
+  background: #03180c;
+  border: 1px solid rgba(214, 175, 64, 0.92);
   text-decoration: underline;
   text-underline-offset: -2px;
   text-decoration-thickness: 1px;
+  box-shadow: 0 10px 24px rgba(7, 56, 33, 0.16);
 }
 
 .brand-logo::before,
@@ -1525,9 +1527,11 @@ body[data-language="hy"] .hero-footer-note {
   }
 
   .hero::before {
-    width: 214px;
-    height: 214px;
-    right: -18px;
+    width: 218px;
+    height: 218px;
+    top: 114px;
+    right: auto;
+    left: 50%;
   }
 
   .brand-mark {
