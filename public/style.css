@@ -232,9 +232,10 @@ h2 {
 }
 
 h1 {
-  max-width: 360px;
+  max-width: min(100%, 356px);
   margin-top: 8px;
   font-size: clamp(44px, 13vw, 58px);
+  overflow-wrap: normal;
 }
 
 .hero-copy p:last-child,
@@ -270,6 +271,7 @@ h1 {
   background: rgba(255, 255, 255, 0.76);
   font-weight: 800;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .hero-info p {
@@ -293,6 +295,7 @@ h1 {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.88);
   text-align: center;
+  overflow: hidden;
 }
 
 .hero-step span {
@@ -324,6 +327,7 @@ h1 {
   background: rgba(255, 255, 255, 0.88);
   font-weight: 900;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .hero-card,
@@ -403,7 +407,7 @@ h1 {
 
 .topbar {
   display: grid;
-  grid-template-columns: 46px 1fr;
+  grid-template-columns: 46px minmax(0, 1fr);
   gap: 14px;
   align-items: center;
 }
@@ -450,7 +454,7 @@ h1 {
 .select-card {
   width: 100%;
   display: grid;
-  grid-template-columns: 54px 1fr auto;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
   padding: 16px;
@@ -490,6 +494,7 @@ h1 {
   color: var(--rose-900);
   font-size: 16px;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .select-card p {
@@ -508,6 +513,8 @@ h1 {
   margin-bottom: 18px;
   align-items: flex-start;
   color: var(--rose-900);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .summary-strip small {
@@ -624,7 +631,7 @@ select {
   padding: 2px 2px 8px;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 
 .time-grid::-webkit-scrollbar {
@@ -831,12 +838,14 @@ select {
   min-width: 0;
   display: grid;
   gap: 4px;
+  overflow-wrap: anywhere;
 }
 
 .admin-fold-header .admin-section-title {
   margin: 0;
   font-size: 32px;
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 .admin-fold-chevron {
@@ -948,6 +957,7 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
 }
 
 .insight-card p {
@@ -985,6 +995,7 @@ select {
 .compact-item {
   padding: 12px;
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .stat-card,
@@ -994,6 +1005,7 @@ select {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 16px 36px rgba(122, 70, 77, 0.08);
+  min-width: 0;
 }
 
 .stat-card {
@@ -1047,6 +1059,7 @@ select {
   font-weight: 800;
   max-width: 100%;
   white-space: normal;
+  text-align: center;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
@@ -1118,7 +1131,7 @@ select {
 
 .service-admin-card {
   display: grid;
-  grid-template-columns: 1fr 150px 96px;
+  grid-template-columns: minmax(0, 1fr) 150px 96px;
   gap: 12px;
   padding: 16px;
   border: 1px solid rgba(232, 184, 189, 0.55);
@@ -1459,7 +1472,7 @@ body[data-language="hy"] {
 }
 
 body[data-language="hy"] h1 {
-  font-size: clamp(38px, 11vw, 50px);
+  font-size: clamp(36px, 10.5vw, 48px);
   line-height: 1.02;
 }
 
@@ -1491,7 +1504,7 @@ body[data-language="hy"] .hero-step strong {
 }
 
 body[data-language="hy"] .hero-step strong {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 body[data-language="hy"] .hero-info,
@@ -1580,7 +1593,7 @@ body[data-language="hy"] .time-chip {
 }
 
 body[data-admin-language="hy"] .admin-section-title {
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.12;
 }
 

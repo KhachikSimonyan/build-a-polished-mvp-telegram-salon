@@ -47,7 +47,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     salon = await get_salon_settings(pool)
     salon_name = salon.get("salonName") or "Heln"
     await update.message.reply_text(
-        f"Բարի գալուստ, {first_name}։ Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ եւ հարմար։",
+        f"Բարի գալուստ, {first_name}։ Ամրագրիր այցդ {salon_name}-ում՝ արագ, գեղեցիկ և հարմար։",
         reply_markup=mini_app_markup(chat_id),
     )
 
@@ -59,7 +59,7 @@ async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         return
 
     await update.message.reply_text(
-        "Բացիր ադմին վահանակը՝ ամրագրումները, ծառայությունները եւ գույները կառավարելու համար։",
+        "Բացիր ադմին վահանակը՝ ամրագրումները, ծառայությունները և գույները կառավարելու համար։",
         reply_markup=admin_markup(),
     )
 

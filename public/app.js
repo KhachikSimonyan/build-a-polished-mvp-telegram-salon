@@ -756,6 +756,61 @@ Object.assign(translations.ru, {
   noSpecialist: "К этой услуге пока не назначен активный специалист."
 });
 
+Object.assign(translations.hy, {
+  privateAppointments: "Լազերային ստուդիայի ամրագրումներ",
+  salesBadge: "Ամրագրում առանց զանգի",
+  heroTitle: "Գրանցվիր հարմար ժամին մի քանի քայլով",
+  heroText: "Ընտրիր ծառայությունը, մասնագետին և ազատ ժամը։ Հաստատումը կստանաս անմիջապես Telegram-ում։",
+  heroSalesLineOne: "Ընտրիր ծառայությունը, մասնագետին և ազատ ժամը։",
+  heroSalesLineTwo: "Հաստատումը կստանաս անմիջապես Telegram-ում։",
+  heroStepOneLabel: "Քայլ 1",
+  heroStepOne: "Ծառայություն",
+  heroStepTwoLabel: "Քայլ 2",
+  heroStepTwo: "Մասնագետ",
+  heroStepThreeLabel: "Քայլ 3",
+  heroStepThree: "Ժամ",
+  heroFooterNote: "Արագ, հարմար և առանց սպասելու",
+  begin: "Ամրագրել",
+  selectTime: "Ընտրիր օրը և ժամը",
+  minutesShort: "րոպե",
+  noSpecialist: "Այս ծառայությանը դեռ ակտիվ մասնագետ կցված չէ։",
+  sent: "Telegram հաստատումն ուղարկվել է։"
+});
+
+Object.assign(translations.en, {
+  privateAppointments: "Laser studio appointments",
+  salesBadge: "Booking without a call",
+  heroTitle: "Book a time that fits you in a few easy steps.",
+  heroText: "Choose a service, specialist, and free time. Your confirmation arrives directly in Telegram.",
+  heroSalesLineOne: "Choose a service, specialist, and free time.",
+  heroSalesLineTwo: "Your confirmation arrives directly in Telegram.",
+  heroStepOneLabel: "Step 1",
+  heroStepOne: "Service",
+  heroStepTwoLabel: "Step 2",
+  heroStepTwo: "Specialist",
+  heroStepThreeLabel: "Step 3",
+  heroStepThree: "Time",
+  heroFooterNote: "Fast, easy, and without waiting",
+  begin: "Book now"
+});
+
+Object.assign(translations.ru, {
+  privateAppointments: "Запись в лазерную студию",
+  salesBadge: "Запись без звонка",
+  heroTitle: "Запишитесь в удобное время за несколько шагов.",
+  heroText: "Выберите услугу, специалиста и свободное время. Подтверждение придет прямо в Telegram.",
+  heroSalesLineOne: "Выберите услугу, специалиста и свободное время.",
+  heroSalesLineTwo: "Подтверждение придет прямо в Telegram.",
+  heroStepOneLabel: "Шаг 1",
+  heroStepOne: "Услуга",
+  heroStepTwoLabel: "Шаг 2",
+  heroStepTwo: "Специалист",
+  heroStepThreeLabel: "Шаг 3",
+  heroStepThree: "Время",
+  heroFooterNote: "Быстро, удобно и без ожидания",
+  begin: "Записаться"
+});
+
 let services = [
   {
     id: "haircut-styling",
