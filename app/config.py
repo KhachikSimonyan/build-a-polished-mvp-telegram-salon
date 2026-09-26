@@ -10,6 +10,8 @@ load_dotenv()
 @dataclass(frozen=True)
 class Settings:
     telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    telegram_use_webhook: bool = os.getenv("TELEGRAM_USE_WEBHOOK", "").lower() == "true"
+    telegram_webhook_secret: str = os.getenv("TELEGRAM_WEBHOOK_SECRET", "")
     base_url: str = os.getenv("BASE_URL", "http://localhost:3000").rstrip("/")
     port: int = int(os.getenv("PORT", "3000"))
     owner_chat_id: str = os.getenv("OWNER_CHAT_ID", "")

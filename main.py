@@ -9,6 +9,7 @@ import asyncpg
 from fastapi import FastAPI, File, Header, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from telegram import Update
 
 from app.bot import create_bot_application, notify_status_change, send_booking_messages
 from app.config import settings
@@ -74,19 +75,36 @@ async def lifespan(app: FastAPI):
     if settings.google_sync_enabled:
         app.state.google_sync_task = asyncio.create_task(run_google_sync_loop(app))
     app.state.telegram_app = await create_bot_application(pool)
+    app.state.telegram_mode = "disabled"
 
     if app.state.telegram_app:
         try:
             await app.state.telegram_app.initialize()
             await app.state.telegram_app.start()
-            await app.state.telegram_app.updater.start_polling()
+            if settings.telegram_use_webhook:
+                if not settings.is_public_https_base_url:
+                    raise RuntimeError("Telegram webhook mode requires a public HTTPS BASE_URL.")
+                if not settings.telegram_webhook_secret:
+                    raise RuntimeError("TELEGRAM_WEBHOOK_SECRET is required in webhook mode.")
+                await app.state.telegram_app.bot.set_webhook(
+                    url=f"{settings.base_url}/telegram/webhook",
+                    secret_token=settings.telegram_webhook_secret,
+                    drop_pending_updates=False,
+                )
+                app.state.telegram_mode = "webhook"
+            else:
+                await app.state.telegram_app.updater.start_polling()
+                app.state.telegram_mode = "polling"
         except Exception:
-            logger.exception("Telegram bot could not start. FastAPI will continue without polling.")
+            logger.exception("Telegram bot could not start. FastAPI will continue without Telegram updates.")
             try:
+                if app.state.telegram_app.running:
+                    await app.state.telegram_app.stop()
                 await app.state.telegram_app.shutdown()
             except Exception:
                 logger.exception("Telegram bot shutdown after failed startup also failed.")
             app.state.telegram_app = None
+            app.state.telegram_mode = "disabled"
     elif settings.disable_telegram_bot:
         print("DISABLE_TELEGRAM_BOT is true. FastAPI will run, but the bot is disabled.")
     else:
@@ -102,7 +120,8 @@ async def lifespan(app: FastAPI):
             except asyncio.CancelledError:
                 pass
         if app.state.telegram_app:
-            await app.state.telegram_app.updater.stop()
+            if app.state.telegram_mode == "polling" and app.state.telegram_app.updater.running:
+                await app.state.telegram_app.updater.stop()
             await app.state.telegram_app.stop()
             await app.state.telegram_app.shutdown()
         await pool.close()
@@ -132,7 +151,23 @@ async def health():
         "ok": True,
         "app": "telegram-salon-booking-mini-app",
         "botEnabled": bool(getattr(app.state, "telegram_app", None)),
+        "botMode": getattr(app.state, "telegram_mode", "disabled"),
     }
+
+
+@app.post("/telegram/webhook")
+async def telegram_webhook(
+    request: Request,
+    x_telegram_bot_api_secret_token: str | None = Header(default=None),
+):
+    if not settings.telegram_use_webhook or not getattr(app.state, "telegram_app", None):
+        raise HTTPException(status_code=404, detail="Telegram webhook is not enabled.")
+    if x_telegram_bot_api_secret_token != settings.telegram_webhook_secret:
+        raise HTTPException(status_code=403, detail="Invalid Telegram webhook secret.")
+
+    update = Update.de_json(await request.json(), app.state.telegram_app.bot)
+    await app.state.telegram_app.process_update(update)
+    return {"ok": True}
 
 
 @app.get("/admin")
